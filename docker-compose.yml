@@ -49,7 +49,7 @@ services:
       EUREKA_CLIENT_REGISTER_WITH_EUREKA: "true"
       EUREKA_CLIENT_FETCH_REGISTRY: "true"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: broker:9092
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: broker:29092
     depends_on:
       - broker
       - eureka-server
