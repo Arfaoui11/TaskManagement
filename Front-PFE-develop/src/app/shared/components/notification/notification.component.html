@@ -1,0 +1,89 @@
+<!-- notification.component.html -->
+<div class="notification-wrapper">
+  <!-- Bouton de notification avec badge -->
+  <div class="notification-trigger" (click)="toggleDropdown()">
+    <i class="fas fa-bell"></i>
+    <span class="notification-badge" *ngIf="unreadCount > 0">
+      {{ unreadCount > 99 ? '99+' : unreadCount }}
+    </span>
+    <!-- Indicateur de connexion -->
+    <div class="connection-status" 
+         [class.connected]="isConnected" 
+         [class.disconnected]="!isConnected"
+         [title]="isConnected ? 'Connecté' : 'Déconnecté'">
+    </div>
+  </div>
+
+  <!-- Dropdown des notifications -->
+  <div class="notification-dropdown" 
+       [class.show]="showDropdown"
+       (clickOutside)="closeDropdown()">
+    
+    <!-- Header -->
+    <div class="dropdown-header">
+      <h4>Notifications</h4>
+      <div class="header-actions">
+        <button class="btn-icon" 
+                (click)="reconnect()" 
+                *ngIf="!isConnected"
+                title="Reconnecter">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+        <button class="btn-icon" 
+                (click)="clearAllNotifications()"
+                *ngIf="notifications.length > 0"
+                title="Tout effacer">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- État de connexion -->
+    <div class="connection-info" *ngIf="!isConnected">
+      <i class="fas fa-exclamation-triangle"></i>
+      <span>Connexion perdue. Les notifications peuvent être retardées.</span>
+      <button class="btn-reconnect" (click)="reconnect()">Reconnecter</button>
+    </div>
+
+    <!-- Liste des notifications -->
+    <div class="notifications-list" *ngIf="notifications.length > 0">
+      <div class="notification-item" 
+           *ngFor="let notification of notifications; trackBy: trackByFn"
+           [ngClass]="getNotificationClass(notification.type)">
+        
+        <div class="notification-content">
+          <div class="notification-icon">
+            <i [class]="getNotificationIcon(notification.type)"></i>
+          </div>
+          
+          <div class="notification-body">
+            <div class="notification-message">{{ notification.message }}</div>
+            <div class="notification-meta">
+              <span class="notification-type">{{ notification.type }}</span>
+              <span class="notification-time">{{ getTimeAgo(notification.timestamp!) }}</span>
+              
+            </div>
+          </div>
+        </div>
+
+        <button class="notification-remove" 
+                (click)="removeNotification(notification)"
+                title="Supprimer">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Message vide -->
+    <div class="empty-state" *ngIf="notifications.length === 0">
+      <i class="fas fa-bell-slash"></i>
+      <p>Aucune notification</p>
+      <small>Les nouvelles notifications apparaîtront ici</small>
+    </div>
+
+    <!-- Footer -->
+    <div class="dropdown-footer" *ngIf="notifications.length > 0">
+      <button class="btn-view-all">Voir toutes les notifications</button>
+    </div>
+  </div>
+</div>

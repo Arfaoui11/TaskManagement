@@ -1,0 +1,40 @@
+<div class="popup-form">
+    <h3>Inviter un utilisateur</h3>
+    
+    <form [formGroup]="inviteForm" (ngSubmit)="onInviteUser()">
+      <div class="form-group">
+  <label for="email">Email</label>
+  <input id="email" formControlName="email" type="email" class="form-control">
+  
+  <div *ngIf="inviteForm.get('email')?.touched && inviteForm.get('email')?.invalid" class="error">
+    <div *ngIf="inviteForm.get('email')?.errors?.['required']">
+      Email requis !
+    </div>
+    <div *ngIf="inviteForm.get('email')?.errors?.['email']">
+      Email invalide !
+    </div>
+    <div *ngIf="inviteForm.get('email')?.errors?.['emailExists']">
+      Cet email est déjà utilisé.
+    </div>
+  </div>
+</div>
+
+  
+      <div class="form-group">
+        <label for="username">Nom d'utilisateur</label>
+        <input id="username" formControlName="username" type="text" class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="roleId">Rôle</label>
+        <select id="roleId" formControlName="roleId" class="form-control">
+          <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
+        </select>
+      </div>
+  
+      <button type="submit" class="btn btn-primary">Inviter</button>
+      <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+      <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    </form>
+  </div>
+  

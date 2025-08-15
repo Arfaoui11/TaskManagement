@@ -1,0 +1,240 @@
+<div class="container">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <app-topbar></app-topbar>
+
+    <!-- Sélection du projet -->
+    <div class="projet-selection">
+      <label for="projet-select">Sélectionnez un projet :</label>
+      <select id="projet-select" [(ngModel)]="selectedProjetId" (change)="onProjetChange()">
+        <option [ngValue]="null">Tous les projets</option>
+        <option *ngFor="let projet of projets" [value]="projet.id">{{ projet.title }}</option>
+      </select>
+    </div>
+
+    <!-- Bouton calendrier -->
+    <div class="calendar-button-container">
+      <button class="btn btn-secondary" (click)="navigateToCalendar()">Accéder au Calendrier</button>
+    </div>
+
+    <!-- Ajout rapide -->
+    <div class="ajout-titre-rapide" *ngIf="selectedProjetId">
+      <input type="text" placeholder="Nouvelle tâche" [(ngModel)]="newTitre" />
+      <button (click)="ajouterTacheRapide()">+</button>
+    </div>
+
+    <!-- Liste des tâches -->
+    <div class="liste-taches" *ngIf="taches.length > 0">
+      <h3>Liste des tâches</h3>
+      <div class="table-responsive">
+        <table class="table task-table">
+          <thead>
+            <tr>
+              <th>Titre</th>
+              <th>Statut</th>
+              <th>Priorité</th>
+              <th>Date Début</th>
+              <th>Date Fin</th>
+              <th>Responsable</th>
+              <th>Catégorie</th>
+              <th>Temps Estimé (h)</th>
+              <th>Temps Passé (h)</th>
+              <th>Commentaires</th>
+              <th>Créée le</th>
+              <th>Modifiée le</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tache of taches">
+              <td>{{ tache.titre }}</td>
+              <td>
+                <span class="badge" [ngClass]="{
+                    'badge-warning': tache.statut === 'EN_ATTENTE',
+                    'badge-primary': tache.statut === 'EN_COURS',
+                    'badge-success': tache.statut === 'TERMINEE'
+                }">{{ tache.statutLibelle || formatStatut(tache.statut) }}</span>
+              </td>
+              <td>
+                <span class="badge" [ngClass]="{
+                    'badge-info': tache.priorite === 'BASSE',
+                    'badge-warning': tache.priorite === 'NORMALE',
+                    'badge-danger': tache.priorite === 'HAUTE'
+                }">{{ tache.prioriteLibelle || formatPriorite(tache.priorite) }}</span>
+              </td>
+              <td>{{ tache.dateDebut | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ tache.dateFin | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ tache.fullName || 'Non assigné' }}</td>
+              <td>{{ tache.categorie || '-' }}</td>
+              <td>{{ tache.tempsEstime ?? '-' }}</td>
+              <td>{{ tache.tempsPasse ?? '-' }}</td>
+              <td>{{ tache.commentaires || '-' }}</td>
+              <td>{{ tache.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ tache.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td class="actions">
+                <button class="btn btn-sm btn-primary" (click)="openUpdateTaskModal(tache)">
+                  <i class="fas fa-edit"></i> Modifier
+                </button>
+                <button class="btn btn-sm btn-danger" (click)="onTaskDelete(tache.id)">
+                  <i class="fas fa-trash"></i> Supprimer
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Bouton créer tâche -->
+<button class="btn btn-success" (click)="toggleCreateForm()">
+  <i class="fas fa-plus"></i> Créer une tâche avec détails
+</button>
+    <!-- Formulaire de création détaillé -->
+<div class="modal-overlay" *ngIf="showCreateForm">
+  <div class="modal-content">
+          <h3>Créer une tâche détaillée</h3>
+
+      <label>Titre :</label>
+      <input type="text" [(ngModel)]="tacheForm.titre" name="titre" required />
+
+     <div class="form-field">
+  <label>Commentaires :</label>
+  <input type="text" [(ngModel)]="tacheForm.commentaires" name="commentaires" />
+</div>
+
+<div class="form-field">
+  <label>Date de début :</label>
+  <input type="datetime-local" [(ngModel)]="tacheForm.dateDebut" name="dateDebut" />
+</div>
+
+<div class="form-field">
+  <label>Date de fin :</label>
+  <input type="datetime-local" [(ngModel)]="tacheForm.dateFin" name="dateFin" />
+</div>
+
+<div class="form-field">
+  <label>Statut :</label>
+  <select [(ngModel)]="tacheForm.statut" name="statut">
+    <option value="EN_ATTENTE">En attente</option>
+    <option value="EN_COURS">En cours</option>
+    <option value="TERMINEE">Terminée</option>
+  </select>
+</div>
+
+<div class="form-field">
+  <label>Priorité :</label>
+  <select [(ngModel)]="tacheForm.priorite" name="priorite">
+    <option value="BASSE">Basse</option>
+    <option value="NORMALE">Normale</option>
+    <option value="HAUTE">Haute</option>
+  </select>
+</div>
+<div class="form-field">
+
+      <label>Temps estimé (h) :</label>
+      <input type="number" [(ngModel)]="tacheForm.tempsEstime" min="0" />
+</div>
+<div class="form-field">
+
+      <label>Temps passé (h) :</label>
+      <input type="number" [(ngModel)]="tacheForm.tempsPasse" min="0" />
+</div>
+<div class="form-field">
+
+      <label>Responsable :</label>
+      <input type="text" [(ngModel)]="tacheForm.fullName" />
+</div>
+<div class="form-field">
+
+      <label>Catégorie :</label>
+      <input type="text" [(ngModel)]="tacheForm.categorie" />
+      </div>
+
+<div class="form-action-buttons">
+  <button class="btn btn-success" (click)="ajouterTacheDetaillee()">
+    <i class="fas fa-check"></i> Créer
+  </button>
+  <button class="btn btn-secondary" (click)="toggleCreateForm()">
+    <i class="fas fa-times"></i> Annuler
+  </button>
+</div>
+    </div>
+  </div>
+    <!-- Bouton ajouter collaborateur -->
+<button *ngIf="selectedProjetId" class="btn btn-primary" (click)="openAddCollaboratorModal()">
+  <i class="fas fa-user-plus"></i> Ajouter un collaborateur
+</button>  </div>
+
+  <!-- Modale ajout collaborateur -->
+  <div class="modal-overlay" *ngIf="showAddCollaboratorModal">
+    <div class="modal-content">
+      <h3>Ajouter un collaborateur</h3>
+      <input type="email" placeholder="Email du collaborateur" [(ngModel)]="emailCollaborateur" />
+      <div class="modal-buttons">
+        <button (click)="addCollaboratorByEmail()">Ajouter</button>
+        <button (click)="closeModal()">Annuler</button>
+      </div>
+      <p *ngIf="message">{{ message }}</p>
+    </div>
+  </div>
+
+  <!-- Modale mise à jour tâche -->
+  <div class="modal-overlay" *ngIf="showUpdateTaskModal">
+    <div class="modal-content">
+      <h3>Modifier la tâche</h3>
+      <form (ngSubmit)="submitUpdateTask()">
+        <label>Titre :</label>
+        <input type="text" [(ngModel)]="taskToUpdate.titre" name="titre" required />
+
+        <label>Description :</label>
+        <textarea [(ngModel)]="taskToUpdate.description" name="description"></textarea>
+
+        <label>Commentaires :</label>
+        <input type="text" [(ngModel)]="taskToUpdate.commentaires" name="commentaires" />
+
+        <label>Date de début :</label>
+        <input type="datetime-local" [(ngModel)]="taskToUpdate.dateDebut" name="dateDebut" />
+
+        <label>Date de fin :</label>
+        <input type="datetime-local" [(ngModel)]="taskToUpdate.dateFin" name="dateFin" />
+
+        <label>Statut :</label>
+        <select [(ngModel)]="taskToUpdate.statut" name="statut">
+          <option value="EN_ATTENTE">En attente</option>
+          <option value="EN_COURS">En cours</option>
+          <option value="TERMINEE">Terminée</option>
+        </select>
+
+        <label>Priorité :</label>
+        <select [(ngModel)]="taskToUpdate.priorite" name="priorite">
+          <option value="BASSE">Basse</option>
+          <option value="NORMALE">Normale</option>
+          <option value="HAUTE">Haute</option>
+        </select>
+
+        <label>Temps estimé :</label>
+        <input type="number" [(ngModel)]="taskToUpdate.tempsEstime" name="tempsEstime" min="0" />
+
+        <label>Temps passé :</label>
+        <input type="number" [(ngModel)]="taskToUpdate.tempsPasse" name="tempsPasse" min="0" />
+
+        <label>Responsable :</label>
+        <input type="text" [(ngModel)]="taskToUpdate.fullName" name="fullName" />
+
+        <label>Catégorie :</label>
+        <input type="text" [(ngModel)]="taskToUpdate.categorie" name="categorie" />
+
+       <div class="modal-buttons">
+  <button type="submit" class="btn btn-primary">
+    <i class="fas fa-save"></i> Enregistrer
+  </button>
+  <button type="button" class="btn btn-secondary" (click)="closeUpdateTaskModal()">
+    <i class="fas fa-times"></i> Annuler
+  </button>
+</div>
+      </form>
+    </div>
+  </div>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

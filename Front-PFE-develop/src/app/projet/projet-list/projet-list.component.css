@@ -1,0 +1,378 @@
+/* Container principal */
+.projet-list-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+
+/* Sidebar */
+app-sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  height: 100vh;
+}
+
+/* Contenu principal */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Titre */
+.main-content h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Messages */
+.error-message {
+  padding: 1rem;
+  background-color: #fde8e8;
+  color: #e74c3c;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.success-message {
+  padding: 1rem;
+  background-color: #e6f7ee;
+  color: #00a854;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+/* Bouton Créer */
+.create-button-container {
+  margin-bottom: 2rem;
+}
+
+.create-button-container button {
+  background-color: #1d4975;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.create-button-container button:hover {
+  background-color: #8f92c9;
+  transform: translateY(-2px);
+}
+
+/* Message aucun projet */
+.no-projets-message {
+  padding: 1.5rem;
+  text-align: center;
+  color: #5a6a7e;
+  background: white;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Grille de cartes */
+.projets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* Carte de projet */
+.projet-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eaeff5;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.projet-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-color: #d6e4ff;
+}
+
+.projet-card h3 {
+  color: #2c3e50;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.projet-card p {
+  color: #6c757d;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+/* Membres de l'équipe */
+.team-members {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed #eaeff5;
+}
+
+.team-members h4 {
+  font-size: 0.85rem;
+  color: #5a6a7e;
+  margin-bottom: 0.5rem;
+}
+
+.team-members ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.team-members li {
+  font-size: 0.8rem;
+  color: #6c757d;
+  padding: 0.25rem 0;
+}
+
+/* Actions */
+.card-actions {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  color: #5a6a7e;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.dropdown-toggle:hover {
+  background-color: #f0f2f5;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 1;
+  padding: 0.5rem 0;
+}
+
+.dropdown-menu button {
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  color: #2c3e50;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dropdown-menu button:hover {
+  background-color: #f0f7ff;
+  color: #1877f2;
+}
+
+/* Modals */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.modal-content h4 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.modal-content label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #5a6a7e;
+  font-size: 0.9rem;
+}
+
+.modal-content select,
+.modal-content input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #eaeff5;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.team-members-list {
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-radius: 8px;
+}
+
+.team-members-list h5 {
+  font-size: 0.9rem;
+  color: #5a6a7e;
+  margin-bottom: 0.5rem;
+}
+
+.team-members-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.team-members-list li {
+  font-size: 0.85rem;
+  color: #6c757d;
+  padding: 0.25rem 0;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+
+.btn-primary {
+  background-color: #A5A7D4;
+  color: white;
+  padding: 0.7rem 1.5rem;
+}
+
+.btn-primary:hover {
+  background-color: #8f92c9;
+}
+
+.btn-secondary {
+  background-color: #f0f2f5;
+  color: #5a6a7e;
+  padding: 0.7rem 1.5rem;
+}
+
+.btn-secondary:hover {
+  background-color: #e1e5eb;
+}
+
+/* Confirmation popup */
+.confirmation-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  max-width: 500px;
+  width: 90%;
+}
+
+.confirmation-popup h4 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.confirmation-popup p {
+  color: #5a6a7e;
+  margin-bottom: 1.5rem;
+}
+
+.confirmation-popup button {
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.confirmation-popup button:first-child {
+  background-color: #A5A7D4;
+  color: white;
+  margin-right: 0.8rem;
+}
+
+.confirmation-popup button:first-child:hover {
+  background-color: #8f92c9;
+}
+
+.confirmation-popup button:last-child {
+  background-color: #f0f2f5;
+  color: #5a6a7e;
+}
+
+.confirmation-popup button:last-child:hover {
+  background-color: #e1e5eb;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .projet-list-container {
+    flex-direction: column;
+  }
+  
+  app-sidebar {
+    width: 100%;
+    height: auto;
+  }
+  
+  .main-content {
+    padding: 1.5rem;
+  }
+  
+  .projets-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-content,
+  .confirmation-popup {
+    width: 95%;
+    padding: 1.5rem;
+  }
+}

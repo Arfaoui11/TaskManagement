@@ -1,0 +1,24 @@
+<div class="card">
+  <!-- Debug info -->
+  <div class="debug-info" *ngIf="debugMode">
+    <small>Debug: {{ dossier | json }}</small>
+  </div>
+
+  <!-- Display Dossier details if dossier is provided -->
+  <div *ngIf="dossier">
+    <h3>{{ dossier.name || 'Nom non disponible' }}</h3>
+    <p *ngIf="dossier.projet">Projet : {{ dossier.projet.title || 'Titre non disponible' }}</p>
+    <div *ngIf="dossier.documents && dossier.documents.length > 0; else noDocuments">
+      <small>Documents : {{ dossier.documents.length }}</small>
+    </div>
+    <ng-template #noDocuments>
+      <small>Aucun document disponible</small>
+    </ng-template>
+  </div>
+
+  <!-- Buttons to trigger events -->
+  <div class="card-actions">
+    <button (click)="onViewDetails()">View Details</button>
+    <button (click)="onDelete()">Delete</button>
+  </div>
+</div>

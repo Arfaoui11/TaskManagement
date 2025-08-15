@@ -1,0 +1,50 @@
+<div class="container">
+    <app-sidebar></app-sidebar>
+
+    <!-- Contenu principal -->
+    <div class="main-content">
+        <app-topbar></app-topbar>
+        
+        <div class="user-list-container">
+            <h2>Liste des Utilisateurs</h2>
+            <tr></tr>
+            <button class="btn btn-success" (click)="openCreateUserPopup()">Créer un utilisateur</button>
+          
+            <div *ngIf="loading">Chargement des utilisateurs...</div>
+            <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+          
+            <table *ngIf="users.length > 0" class="user-list-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nom</th>
+                  <th>Email</th>
+                  <th>Rôle</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of users">
+                  <td>{{ user.id }}</td>
+                  <td>{{ user.username }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.role?.name }}</td>
+                  <td>
+                    <button class="btn btn-primary" (click)="viewUserDetails(user.id)">Voir</button>
+                    <button class="btn btn-danger" (click)="deleteUser(user.id)">Supprimer</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          
+            <!-- POPUP FORM -->
+<!-- POPUP FORM -->
+<div *ngIf="isCreateUserPopupVisible" class="popup active">
+  <div class="popup-content">
+    <span class="close" (click)="closeCreateUserPopup()">&times;</span>
+    <app-sign-admin></app-sign-admin>
+  </div>
+</div>
+
+          </div>
+          

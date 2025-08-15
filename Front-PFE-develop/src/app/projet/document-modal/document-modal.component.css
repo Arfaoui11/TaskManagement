@@ -1,0 +1,264 @@
+.document-modal-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.modal-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.document-icon {
+  margin-right: 12px;
+  color: #757575;
+}
+
+.header-actions button {
+  margin-left: 8px;
+}
+
+.header-actions button.active {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.document-preview {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  background-color: #f5f5f5;
+  overflow: hidden;
+}
+
+.preview-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Styles améliorés pour les PDF */
+.pdf-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.document-frame {
+  width: 95%;
+  height: 95%;
+  min-height: 600px;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Classe spéciale pour agrandir le PDF */
+.pdf-frame-large {
+  width: 98%;
+  height: 98%;
+  min-height: 80vh;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Quand le panneau de détails est fermé, utiliser plus d'espace */
+.document-preview:not(.with-details) .document-frame {
+  width: 98%;
+  height: 98%;
+  min-height: 85vh;
+}
+
+/* Bouton pour basculer la taille du PDF */
+.pdf-size-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.pdf-size-toggle:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.image-container {
+  max-width: 100%;
+  max-height: 80vh;
+}
+
+.document-image {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+.text-container {
+  max-width: 100%;
+  max-height: 80vh;
+  overflow: auto;
+  text-align: left;
+  background-color: white;
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.text-content {
+  white-space: pre-wrap;
+  font-family: monospace;
+  margin: 0;
+}
+
+.unsupported-container, .loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.unsupported-icon, .error-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  color: #757575;
+}
+
+.error-icon {
+  color: #f44336;
+}
+
+.details-panel {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.3s ease;
+  background-color: white;
+  border-left: 1px solid #e0e0e0;
+}
+
+.details-panel.show {
+  width: 350px;
+}
+
+.details-content {
+  padding: 16px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.info-card {
+  margin-bottom: 16px;
+}
+
+.info-card mat-card-header {
+  margin-bottom: 8px;
+}
+
+.info-card mat-card-title {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.info-card mat-icon {
+  margin-right: 8px;
+  font-size: 20px;
+}
+
+.info-item, .metadata-item {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.label {
+  font-weight: 500;
+  margin-right: 8px;
+  min-width: 120px;
+}
+
+.value {
+  color: #616161;
+  word-break: break-word;
+}
+
+.breadcrumb {
+  display: flex;
+  margin-top: 8px;
+}
+
+.breadcrumb-path {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-separator {
+  font-size: 16px;
+  margin: 0 4px;
+  color: #bdbdbd;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .modal-content {
+    flex-direction: column;
+  }
+  
+  .details-panel {
+    width: 100%;
+    height: 0;
+    border-left: none;
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  .details-panel.show {
+    width: 100%;
+    height: 300px;
+  }
+  
+  .document-frame,
+  .pdf-frame-large {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+  }
+}

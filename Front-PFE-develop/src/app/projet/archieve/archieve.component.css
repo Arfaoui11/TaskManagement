@@ -1,0 +1,197 @@
+/* Container principal */
+.archive-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Contenu principal */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+}
+.delete-button {
+  background-color: #e53935; /* Rouge vif */
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+app-sidebar {
+  width: 250px;
+  background: #fff;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 100;
+}
+.delete-button:hover {
+  background-color: #c62828; /* Rouge plus foncé au survol */
+}
+
+.delete-button:disabled {
+  background-color: #ef9a9a; /* Rouge clair quand désactivé */
+  cursor: not-allowed;
+}
+
+/* Titres des sections */
+h2 {
+  color: #2c3e50;
+  margin: 2.5rem 0 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e0e6ed;
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+h2::before {
+  content: "📁";
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+h2:nth-of-type(2)::before { /* Icône pour projets */
+  content: "📂";
+}
+
+h2:nth-of-type(3)::before { /* Icône pour documents */
+  content: "📄";
+}
+
+/* Items d'archive */
+.archive-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 1.25rem 1.75rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 4px solid;
+}
+
+.archive-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Couleurs par type */
+.archive-item:nth-of-type(1) {
+  border-left-color: #8e44ad; /* Violet pour dossiers */
+}
+
+.archive-item:nth-of-type(2) {
+  border-left-color: #3498db; /* Bleu pour projets */
+}
+
+.archive-item:nth-of-type(3) {
+  border-left-color: #27ae60; /* Vert pour documents */
+}
+
+/* Texte des items */
+.archive-item p {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #34495e;
+  font-weight: 500;
+  flex-grow: 1;
+}
+
+/* Bouton de restauration */
+.restore-btn {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 5px rgba(52, 152, 219, 0.2);
+}
+
+.restore-btn:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+
+.restore-btn:active {
+  transform: translateY(0);
+}
+
+.restore-btn::before {
+  content: "↻";
+  font-size: 1rem;
+}
+
+/* Section vide */
+.empty-section {
+  text-align: center;
+  padding: 2rem;
+  color: #95a5a6;
+  font-style: italic;
+  background: #f9f9f9;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .main-content {
+    margin-left: 0;
+    padding: 1.5rem;
+    padding-top: 80px;
+  }
+  
+  .archive-container {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .archive-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .restore-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  h2 {
+    font-size: 1.3rem;
+  }
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.archive-item {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.archive-item:nth-child(1) { animation-delay: 0.1s; }
+.archive-item:nth-child(2) { animation-delay: 0.2s; }
+.archive-item:nth-child(3) { animation-delay: 0.3s; }

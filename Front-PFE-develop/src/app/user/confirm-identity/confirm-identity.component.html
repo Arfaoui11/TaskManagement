@@ -1,0 +1,40 @@
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  
+
+  <!-- Content -->
+  <div class="main-content">
+    <div class="confirm-identity-container">
+      <h2>Confirmer votre identité</h2>
+      <p>Veuillez entrer l'OTP et le token d'activation pour activer votre compte.</p>
+    
+      <form [formGroup]="confirmForm" (ngSubmit)="onConfirmIdentity()">
+        <!-- Token d'activation -->
+        
+    
+        <!-- OTP -->
+        <div class="form-group">
+          <label for="otp">Code OTP</label>
+          <input id="otp" formControlName="otp" type="text" class="form-control" placeholder="Entrez votre code OTP" />
+          <div *ngIf="confirmForm.get('otp')?.invalid && confirmForm.get('otp')?.touched" class="error-message">
+            Le code OTP est requis et doit être composé de 6 chiffres.
+          </div>
+        </div>
+    
+        <!-- Boutons de soumission -->
+        <div class="form-group">
+          <button type="submit" [disabled]="confirmForm.invalid" class="btn btn-primary">Confirmer</button>
+        </div>
+      </form>
+    
+      <!-- Messages d'erreur ou de succès -->
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+    
+      <div *ngIf="successMessage" class="alert alert-success">
+        {{ successMessage }}
+      </div>
+    </div>
+  </div>
+</div>

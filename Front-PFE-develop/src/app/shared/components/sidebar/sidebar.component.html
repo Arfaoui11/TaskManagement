@@ -1,0 +1,71 @@
+
+<div class="sidebar" [ngClass]="{'collapsed': isCollapsed}">
+    <div class="sidebar-header">
+        <img src="assets/images/logo.png" alt="User Avatar">
+    </div>
+    <ul>
+      <!-- Tableau de bord - Toujours visible -->
+      <li>
+        <a routerLink="/dashboard" routerLinkActive="active">
+          <i class="fas fa-tachometer-alt"></i>
+          <span>Tableau de bord</span>
+        </a>
+      </li>
+
+      <!-- Utilisateurs - Visible si permission 'view_users' -->
+      <li *ngIf="hasPermission('read_users')">
+        <a routerLink="/users" routerLinkActive="active">
+          <i class="fas fa-users"></i>
+          <span>Utilisateurs</span>
+        </a>
+      </li>
+
+      <!-- Rôles - Visible si permission 'manage_roles' -->
+      <li *ngIf="hasPermission('manage_roles')">
+        <a routerLink="/roles" routerLinkActive="active">
+          <i class="fas fa-user-tag"></i>
+          <span>Rôles</span>
+        </a>
+      </li>
+
+      <!-- Permissions - Visible si permission 'manage_permissions' -->
+      <li *ngIf="hasPermission('manage_permissions')">
+        <a routerLink="/permissions" routerLinkActive="active">
+          <i class="fas fa-user-lock"></i> 
+          <span>Permissions</span>
+        </a>
+      </li>
+
+      <!-- Équipes - Visible si permission 'manage_teams' -->
+      <li *ngIf="hasPermission('manage_teams')">
+        <a routerLink="/teams" routerLinkActive="active">
+          <i class="fas fa-users-cog"></i>
+          <span>Équipes</span>
+        </a>
+      </li>
+
+      <!-- Projets - Visible si permission 'view_projects' -->
+      <li *ngIf="hasPermission('read_projet')">
+        <a routerLink="/projets" routerLinkActive="active">
+          <i class="fas fa-project-diagram"></i>
+          <span>Projets</span>
+        </a>
+      </li>
+
+      <!-- Tâches - Visible si permission 'manage_tasks' -->
+      <li *ngIf="hasPermission('manage_tasks')">
+        <a routerLink="/list-task" routerLinkActive="active">
+          <i class="fas fa-clipboard-list"></i>
+          <span>Tâches</span>
+        </a>
+      </li>
+
+      <!-- Archive - Visible si permission 'view_archive' -->
+      <li *ngIf="hasPermission('view_archive')">
+        <a routerLink="/projets/:projetId/archieve" routerLinkActive="active">
+          <i class="fas fa-archive"></i> 
+          <span>Archive</span>
+        </a>
+      </li>
+    </ul>
+</div>

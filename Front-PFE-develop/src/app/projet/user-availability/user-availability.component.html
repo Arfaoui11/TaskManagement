@@ -1,0 +1,60 @@
+<!-- user-availability.component.html -->
+<div class="user-availability-container">
+  <!-- Navigation des semaines -->
+  <div class="week-navigation">
+    <button class="btn btn-outline-primary" (click)="navigatePreviousWeek()">
+      <i class="fas fa-chevron-left"></i> Semaine précédente
+    </button>
+    
+    <span class="week-dates">
+      {{ getDisplayDate(displayDates[0]) }} - {{ getDisplayDate(displayDates[displayDates.length-1]) }}
+    </span>
+    
+    <button class="btn btn-outline-primary" (click)="navigateNextWeek()">
+      Semaine suivante <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+
+  <!-- Tableau des disponibilités -->
+  <div class="availability-table-container">
+    <table class="table table-bordered availability-table">
+      <thead>
+        <tr>
+          <th>Utilisateur</th>
+          <ng-container *ngFor="let date of displayDates">
+            <th>
+              {{ getDisplayDate(date) }}
+            </th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of userAvailability">
+          <td>{{ user.fullName }}</td>
+          <ng-container *ngFor="let date of displayDates">
+            <td [ngClass]="{'available': user.isAvailable[date], 'unavailable': !user.isAvailable[date]}">
+              <div class="hours-info">
+                <div class="hours-label">Heures utilisées:</div>
+                <div class="hours-value">{{ user.dailyHours[date] | number:'1.0-1' }}/{{ maxHoursPerDay }}</div>
+              </div>
+              <div class="availability-status">
+                <span *ngIf="user.isAvailable[date]" class="available-badge">
+                  <i class="fas fa-check-circle"></i> Disponible
+                  <span class="remaining-hours">({{ getRemainingHours(user, date) | number:'1.0-1' }}h restantes)</span>
+                </span>
+                <span *ngIf="!user.isAvailable[date]" class="unavailable-badge">
+                  <i class="fas fa-times-circle"></i> Non disponible
+                </span>
+              </div>
+            </td>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Si aucun utilisateur n'est disponible -->
+  <div *ngIf="userAvailability.length === 0" class="no-data-message">
+    Aucune donnée de disponibilité disponible. Veuillez ajouter des utilisateurs et des tâches.
+  </div>
+</div>

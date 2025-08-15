@@ -1,0 +1,38 @@
+<div class="manage-members-container">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <app-topbar></app-topbar>
+    <h2>Gérer les membres de l'équipe</h2>
+
+    <div *ngIf="isLoading">Chargement...</div>
+
+    <div *ngIf="!isLoading">
+      <h3>Liste des utilisateurs disponibles</h3>
+      <div *ngIf="allUsers.length === 0">Aucun utilisateur trouvé.</div>
+
+      <ul class="user-list">
+        <li *ngFor="let user of allUsers">
+          <span>{{ user.username }} - {{ user.email }}</span>
+          <button *ngIf="!isMember(user.id)" (click)="addMember(user.id)">
+            Ajouter à l'équipe
+          </button>
+        </li>
+      </ul>
+
+      <h3>Équipe actuelle</h3>
+      <div *ngIf="team.users.length === 0">Aucun membre dans l'équipe.</div>
+
+      <ul class="user-list">
+        <li *ngFor="let user of team.users">
+          <span>{{ user.username }} - {{ user.email }}</span>
+          <button (click)="removeMember(user.id)">
+            Retirer de l'équipe
+          </button>
+        </li>
+      </ul>
+
+      <button (click)="cancel()">Annuler</button>
+    </div>
+  </div>
+</div>

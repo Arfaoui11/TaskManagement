@@ -1,0 +1,91 @@
+<div class="document-form-container">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <app-topbar></app-topbar>
+
+    <h2>Créer un nouveau document</h2>
+
+    <!-- Messages de notification -->
+    <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+    <form [formGroup]="createForm" (ngSubmit)="onSubmit()" novalidate>
+
+      <!-- Nom du document -->
+      <div class="form-group">
+        <label for="documentName">Nom du document *</label>
+        <input
+          id="documentName"
+          type="text"
+          formControlName="name"
+          class="form-control"
+          [class.is-invalid]="
+            formControls['name'].invalid && (formControls['name'].touched || formSubmitAttempted)
+          "
+          maxlength="100"
+          required
+        />
+        <div
+          *ngIf="
+            formControls['name'].invalid && (formControls['name'].touched || formSubmitAttempted)
+          "
+          class="invalid-feedback"
+        >
+          <div *ngIf="formControls['name'].errors && formControls['name'].errors['required']">
+            Le nom du document est requis.
+          </div>
+          <div *ngIf="formControls['name'].errors && formControls['name'].errors['required'].maxlength">
+            Le nom ne peut pas dépasser 100 caractères.
+          </div>
+        </div>
+      </div>
+
+      <!-- Description du document (optionnel) -->
+      <div class="form-group">
+        <label for="description">Description (optionnel)</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          class="form-control"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <!-- Upload de fichier -->
+      <div class="form-group">
+        <label for="fileUpload">Fichier *</label>
+        <input
+          type="file"
+          id="fileUpload"
+          class="form-control-file"
+          (change)="onFileSelected($event)"
+          [class.is-invalid]="
+            formControls['file'].invalid && (formControls['file'].touched || formSubmitAttempted)
+          "
+          accept=".jpg,.jpeg,.png,.pdf,.txt,.doc,.docx"
+        />
+        <div
+          *ngIf="
+            formControls['file'].invalid && (formControls['file'].touched || formSubmitAttempted)
+          "
+          class="invalid-feedback d-block"
+        >
+          <div *ngIf="formControls['file'].errors && formControls['file'].errors['file']">Un fichier est requis.</div>
+        </div>
+        <small class="form-text text-muted">
+          Types acceptés: JPG, PNG, PDF, TXT, DOC, DOCX. Taille max: {{ maxSizeMB }}MB
+        </small>
+      </div>
+
+      <!-- Boutons d'action -->
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+          Créer le document
+        </button>
+<button type="button" class="btn btn-secondary ml-2" (click)="onCancel()">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>

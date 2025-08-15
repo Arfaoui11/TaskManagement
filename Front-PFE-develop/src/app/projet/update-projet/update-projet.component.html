@@ -1,0 +1,40 @@
+<div class="update-projet-container">
+    <app-sidebar></app-sidebar>
+
+    <!-- Contenu principal -->
+    <div class="main-content">
+        <!-- Barre supérieure (Topbar) -->
+        <app-topbar></app-topbar>
+    <h2>Modifier le Projet</h2>
+  
+    <!-- Affichage du message d'erreur si un problème survient -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Affichage du chargement -->
+    <div *ngIf="isLoading" class="loading-message">
+      Chargement en cours...
+    </div>
+  
+    <!-- Formulaire de mise à jour -->
+    <form *ngIf="!isLoading" (ngSubmit)="updateProjet()">
+      <div class="form-group">
+        <label for="name">Nom du projet :</label>
+        <input type="text" id="name" [(ngModel)]="projet.title" name="name" required />
+      </div>
+  
+      <div class="form-group">
+        <label for="description">Description :</label>
+        <textarea id="description" [(ngModel)]="projet.description" name="description" required></textarea>
+      </div>
+  
+      
+      <!-- Boutons -->
+      <div class="button-group">
+        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+        <button type="button" class="btn btn-secondary" (click)="cancelUpdate()">Annuler</button>
+      </div>
+    </form>
+  </div>
+  

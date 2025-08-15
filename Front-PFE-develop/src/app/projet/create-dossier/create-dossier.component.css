@@ -1,0 +1,161 @@
+/* Container principal */
+.create-projet-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sidebar */
+app-sidebar {
+  width: 250px;
+  background: #fff;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+/* Contenu principal */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  background-color: #f8f9fa;
+}
+
+/* Topbar */
+
+/* Titre */
+h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #eaeff5;
+}
+
+/* Formulaire */
+form {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Groupes de formulaire */
+.form-group {
+  margin-bottom: 1.75rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: #4a5568;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+}
+
+.form-group input[type="text"]:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+  background-color: white;
+}
+
+/* Messages d'erreur */
+.error-message {
+  color: #e53e3e;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+/* Boutons */
+.form-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eaeff5;
+}
+
+button {
+  padding: 0.85rem 1.75rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 150px;
+  text-align: center;
+}
+
+button[type="submit"] {
+  background-color: #4299e1;
+  color: white;
+  border: none;
+}
+
+button[type="submit"]:hover {
+  background-color: #3182ce;
+}
+
+button[type="submit"]:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+}
+
+button[type="button"] {
+  background-color: #fff;
+  color: #4a5568;
+  border: 1px solid #cbd5e0;
+}
+
+button[type="button"]:hover {
+  background-color: #f7fafc;
+  border-color: #a0aec0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .create-projet-container {
+    flex-direction: column;
+  }
+  
+  app-sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+  }
+  
+  .main-content {
+    padding: 1.5rem;
+  }
+  
+  form {
+    padding: 1.5rem;
+  }
+  
+  .form-group {
+    flex-direction: column;
+  }
+  
+  button {
+    width: 100%;
+  }
+}

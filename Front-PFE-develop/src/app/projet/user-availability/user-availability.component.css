@@ -1,0 +1,111 @@
+/* user-availability.component.css */
+
+.user-availability-container {
+  margin: 20px 0;
+}
+
+.week-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.week-dates {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.availability-table-container {
+  overflow-x: auto;
+}
+
+.availability-table {
+  min-width: 100%;
+  border-collapse: collapse;
+}
+
+.availability-table th {
+  background-color: #f8f9fa;
+  text-align: center;
+  padding: 10px;
+}
+
+.availability-table td {
+  padding: 10px;
+  vertical-align: top;
+  transition: all 0.2s ease;
+}
+
+.availability-table td.available {
+  background-color: rgba(40, 167, 69, 0.1);
+}
+
+.availability-table td.unavailable {
+  background-color: rgba(220, 53, 69, 0.1);
+}
+
+.hours-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.availability-status {
+  font-size: 0.85rem;
+}
+
+.available-badge {
+  color: #28a745;
+}
+
+.unavailable-badge {
+  color: #dc3545;
+}
+
+.remaining-hours {
+  font-style: italic;
+  margin-left: 5px;
+}
+
+.no-data-message {
+  text-align: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+
+/* Styles pour le drag and drop */
+.user-drag-element {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  cursor: grab;
+  transition: all 0.2s ease;
+}
+
+.user-drag-element:hover {
+  background-color: #e9ecef;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-drag-element.dragging {
+  opacity: 0.6;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.drag-icon {
+  color: #6c757d;
+  margin-left: 5px;
+}
+
+/* Effet visuel pour la zone de dépôt lors du survol */
+.task-drop-target.dragover {
+  background-color: rgba(0, 123, 255, 0.2);
+  border: 2px dashed #007bff;
+}

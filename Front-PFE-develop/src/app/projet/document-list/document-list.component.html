@@ -1,0 +1,50 @@
+<div class="document-list-container">
+  <app-sidebar></app-sidebar>
+  
+  <div class="main-content">
+    <app-topbar></app-topbar>
+
+    <h2>Liste des Documents</h2>
+    
+    <div class="create-button-container">
+      <button (click)="onCreateDocument()">Créer un document</button>
+      <button (click)="goBack()">Retour</button>
+    </div>
+    
+    <!-- Liste des documents actifs -->
+    <div *ngIf="documents.length === 0" class="no-documents-message">
+      Aucun document actif trouvé pour ce dossier.
+    </div>
+
+    <div *ngIf="documents.length > 0" class="documents-grid">
+      <div *ngFor="let document of documents" class="document-card">
+        <h3>{{ document.name || 'Nom non disponible' }}</h3>
+        <p>Type : {{ document.type || 'Type inconnu' }}</p>
+        <p>Créé le : {{ document.createdAt | date:'medium' }}</p>
+  
+        <!-- Menu à trois points -->
+        <div class="dropdown">
+          <button class="dropdown-toggle" (click)="toggleDropdown(document.id!)">
+            ⋮
+          </button>
+          <div *ngIf="openedDropdown === document.id?.toString()" class="dropdown-menu">
+            <button (click)="onViewDocumentDetails(document.id!); $event.stopPropagation()">Voir les détails</button>
+            <button (click)="onEditDocument(document.id!); $event.stopPropagation()">Modifier</button>
+            <button (click)="onArchiveDocument(document.id!); $event.stopPropagation()">Archiver</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Popup de confirmation -->
+<div *ngIf="showConfirmationModal" class="modal-overlay">
+  <div class="modal-content">
+    <h3>{{ confirmationMessage }}</h3>
+    <div class="modal-actions">
+      <button (click)="confirmAction()">Confirmer</button>
+      <button (click)="cancelAction()">Annuler</button>
+    </div>
+  </div>
+</div>

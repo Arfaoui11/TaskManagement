@@ -1,0 +1,93 @@
+<div class="document-update-container">
+  <app-sidebar></app-sidebar>
+
+  <!-- Contenu principal -->
+  <div class="main-content">
+    <!-- Barre supérieure (Topbar) -->
+    <app-topbar></app-topbar>
+      <h4 class="mb-0">Modifier le Document</h4>
+    <div class="card-body">
+      <form [formGroup]="documentForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+        <!-- Document Name -->
+        <div class="form-group mb-3">
+          <label for="name" class="form-label">Nom du document *</label>
+          <input 
+            type="text" 
+            id="name" 
+            formControlName="name" 
+            class="form-control" 
+            [ngClass]="{ 'is-invalid': documentForm.get('name')?.invalid && documentForm.get('name')?.touched }"
+            required>
+          <div *ngIf="documentForm.get('name')?.invalid && documentForm.get('name')?.touched" 
+               class="invalid-feedback">
+            <span *ngIf="documentForm.get('name')?.errors?.['required']">
+              Le nom du document est obligatoire
+            </span>
+          </div>
+        </div>
+
+        <!-- File Upload -->
+        <div class="form-group mb-3">
+          <label for="file" class="form-label">Fichier</label>
+          <input 
+            type="file" 
+            id="file" 
+            (change)="onFileChange($event)" 
+            class="form-control"
+            [ngClass]="{ 'is-invalid': documentForm.get('file')?.invalid && documentForm.get('file')?.touched }">
+          
+          <small class="form-text text-muted">
+            Formats acceptés : PDF, Word, Excel, JPG, PNG
+          </small>
+          
+          <!-- Current file display -->
+          <div *ngIf="existingFileName" class="mt-2">
+            <span class="badge bg-info text-dark">
+              <i class="bi bi-file-earmark me-1"></i>
+              Fichier actuel : {{ existingFileName }}
+            </span>
+            <button 
+              *ngIf="existingFileName"
+              type="button" 
+              class="btn btn-sm btn-outline-primary ms-2"
+              (click)="downloadCurrentFile()">
+              <i class="bi bi-download"></i> Télécharger
+            </button>
+          </div>
+          
+          <div *ngIf="!existingFileName" class="mt-2">
+            <span class="badge bg-secondary">
+              Aucun fichier attaché
+            </span>
+          </div>
+        </div>
+
+        <!-- Error Messages -->
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          {{ errorMessage }}
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-between mt-4">
+          <button 
+            type="button" 
+            class="btn btn-outline-secondary" 
+            (click)="onCancel()"
+            [disabled]="isLoading">
+            <i class="bi bi-x-circle me-2"></i>Annuler
+          </button>
+          
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="documentForm.invalid || isLoading">
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <i *ngIf="!isLoading" class="bi bi-save me-2"></i>
+            {{ isLoading ? 'Enregistrement...' : 'Enregistrer' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

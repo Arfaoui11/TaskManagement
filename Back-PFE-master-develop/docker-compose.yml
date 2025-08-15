@@ -1,0 +1,245 @@
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper
+    ports: ["2181:2181"]
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks: ["app-network"]
+  broker:
+    image: confluentinc/cp-kafka:7.0.1
+    container_name: broker
+    ports: ["9093:9092"]  # Port différent pour éviter les conflits
+    depends_on: ["zookeeper"]
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    networks: ["app-network"]
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics --bootstrap-server localhost:9092 --list || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+  kafka-service:
+    container_name: kafka-service
+    ports: [ "9092:8080" ]  # Port 8080 pour Spring Boot, exposé sur 9092
+    build:
+      context: kafka-service
+      dockerfile: Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_APPLICATION_NAME: kafka-service
+      SERVER_PORT: 8080
+      # Configuration Eureka
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: "true"
+      EUREKA_CLIENT_FETCH_REGISTRY: "true"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_CLIENT_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS: 30
+      EUREKA_CLIENT_REGISTRY_FETCH_INTERVAL_SECONDS: 30
+      EUREKA_CLIENT_INSTANCE_LEASE_EXPIRATION_DURATION_IN_SECONDS: 90
+      # Configuration pour se connecter au vrai Kafka
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: broker:9092
+    depends_on:
+      broker:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    networks: [ "app-network" ]
+    restart: on-failure
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports: ["9411:9411"]
+    networks: ["app-network"]
+
+  postgres-user:
+    image: postgres:13
+    container_name: postgres-user
+    ports: ["5432:5432"]
+    environment:
+      POSTGRES_DB: user-service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes: ["postgres-user-data:/var/lib/postgresql/data"]
+    networks: ["postgres-network"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres-projet:
+    image: postgres:13
+    container_name: postgres-projet
+    ports: ["5433:5432"]
+    environment:
+      POSTGRES_DB: proj_service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes: ["postgres-projet-data:/var/lib/postgresql/data"]
+    networks: ["postgres-network"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  eureka-server:
+    build:
+      context: eureka-server
+      dockerfile: Dockerfile
+    container_name: eureka-server
+    ports: ["8761:8761"]
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_APPLICATION_NAME: eureka-server
+      SERVER_PORT: 8761
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: "false"
+      EUREKA_CLIENT_FETCH_REGISTRY: "false"
+      EUREKA_SERVER_ENABLE_SELF_PRESERVATION: "false"
+      EUREKA_SERVER_EVICTION_INTERVAL_TIMER_IN_MS: "5000"
+    networks: ["app-network"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  gateway-service:
+    build:
+      context: gateway-service
+      dockerfile: Dockerfile
+    container_name: gateway-service
+    ports: ["9090:8080"]
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_APPLICATION_NAME: gateway-service
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: "true"
+      EUREKA_CLIENT_FETCH_REGISTRY: "true"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_CLIENT_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS: 30
+      EUREKA_CLIENT_REGISTRY_FETCH_INTERVAL_SECONDS: 30
+      EUREKA_CLIENT_INSTANCE_LEASE_EXPIRATION_DURATION_IN_SECONDS: 90
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    networks: ["app-network"]
+    restart: on-failure
+
+  user-service:
+    build:
+      context: user-service
+      dockerfile: Dockerfile
+    container_name: user-service
+    ports: ["8085:8085"]
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_APPLICATION_NAME: user-service
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-user:5432/user-service
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: "true"
+      EUREKA_CLIENT_FETCH_REGISTRY: "true"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_CLIENT_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS: 30
+      EUREKA_CLIENT_REGISTRY_FETCH_INTERVAL_SECONDS: 30
+      EUREKA_CLIENT_INSTANCE_LEASE_EXPIRATION_DURATION_IN_SECONDS: 90
+    depends_on:
+      postgres-user:
+        condition: service_healthy
+      kafka-service:
+        condition: service_started
+      eureka-server:
+        condition: service_healthy
+    networks: ["app-network", "postgres-network"]
+    restart: on-failure
+
+  auth-service:
+    build:
+      context: auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports: ["9000:9000"]
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_APPLICATION_NAME: auth-service
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-user:5432/user-service
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: "true"
+      EUREKA_CLIENT_FETCH_REGISTRY: "true"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_CLIENT_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS: 30
+      EUREKA_CLIENT_REGISTRY_FETCH_INTERVAL_SECONDS: 30
+      EUREKA_CLIENT_INSTANCE_LEASE_EXPIRATION_DURATION_IN_SECONDS: 90
+    depends_on:
+      postgres-user:
+        condition: service_healthy
+      kafka-service:
+        condition: service_started
+      eureka-server:
+        condition: service_healthy
+    networks: ["app-network", "postgres-network"]
+    restart: on-failure
+
+  projet-service:
+    build:
+      context: projet-service
+      dockerfile: Dockerfile
+    container_name: projet-service
+    ports: ["8082:8082"]
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_APPLICATION_NAME: projet-service
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-projet:5432/proj_service
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: "true"
+      EUREKA_CLIENT_FETCH_REGISTRY: "true"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_CLIENT_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS: 30
+      EUREKA_CLIENT_REGISTRY_FETCH_INTERVAL_SECONDS: 30
+      EUREKA_CLIENT_INSTANCE_LEASE_EXPIRATION_DURATION_IN_SECONDS: 90
+    depends_on:
+      postgres-projet:
+        condition: service_healthy
+      kafka-service:
+        condition: service_started
+      eureka-server:
+        condition: service_healthy
+    networks: ["app-network", "postgres-network"]
+    restart: on-failure
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports: ["5050:80"]
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks: ["postgres-network"]
+
+networks:
+  app-network:
+    driver: bridge
+  postgres-network:
+    driver: bridge
+
+volumes:
+  postgres-user-data:
+  postgres-projet-data:
+  pgadmin-data:

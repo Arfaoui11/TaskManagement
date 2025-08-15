@@ -1,0 +1,210 @@
+/* Main container layout - ajusté sans topbar */
+.main-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sidebar - ajusté pour prendre toute la hauteur */
+app-sidebar {
+  width: 250px;
+  background: #fff;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Main content - ajusté pour remplir l'espace */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  margin-left: 0; /* Supprime tout décalage */
+}
+
+/* Suppression de tout espace réservé pour la topbar */
+app-topbar {
+  display: none !important; /* Masque complètement la topbar */
+}
+
+/* Ajustements responsive */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+  
+  app-sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+  }
+  
+  .main-content {
+    padding: 1.5rem;
+    margin-left: 0;
+  }
+}
+/* Form styling */
+.create-role-form {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+
+/* Form groups */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+}
+
+/* Permissions list */
+.permissions-list {
+  background: #f8fafc;
+  border-radius: 6px;
+  padding: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.permissions-list label {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  margin: 0;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.permissions-list label:hover {
+  background: #edf2f7;
+}
+
+.permissions-list input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-right: 0.75rem;
+  accent-color: #4299e1;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: #edf2f7;
+  border-radius: 6px;
+}
+
+.pagination button {
+  padding: 0.5rem 1rem;
+  background: #4299e1;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pagination button:disabled {
+  background: #a0aec0;
+  cursor: not-allowed;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: #3182ce;
+}
+
+.pagination span {
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+/* Buttons */
+.btn-create-role {
+  background-color: #48bb78;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 1rem;
+}
+
+.btn-create-role:hover {
+  background-color: #38a169;
+}
+
+button[type="button"] {
+  background-color: #ed8936;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button[type="button"]:hover {
+  background-color: #dd6b20;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  .create-role-form {
+    padding: 1.5rem;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+}

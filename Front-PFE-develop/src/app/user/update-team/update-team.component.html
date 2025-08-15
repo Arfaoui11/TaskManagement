@@ -1,0 +1,20 @@
+<div class="update-team-container">
+    <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <app-topbar></app-topbar>
+    <h2>Modifier l'équipe</h2>
+  
+    <div *ngIf="isLoading">Chargement...</div>
+  
+    <form *ngIf="!isLoading" (ngSubmit)="updateTeam()">
+      <div class="form-group">
+        <label for="teamName">Nom de l'équipe</label>
+        <input id="teamName" type="text" [(ngModel)]="team.name" name="name" required />
+      </div>
+  
+      <button type="submit">Mettre à jour</button>
+      <button type="button" (click)="router.navigate(['/teams'])">Annuler</button>
+    </form>
+  </div>
+  

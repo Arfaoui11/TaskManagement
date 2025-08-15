@@ -1,0 +1,99 @@
+<div *ngIf="showModal" class="modal">
+  <div class="modal-content">
+    <h2>Mettre à jour la tâche</h2>
+
+    <!-- Message chargement / erreur -->
+    <div *ngIf="loading" class="loading-message">Chargement...</div>
+    <div *ngIf="message" class="message"><p>{{ message }}</p></div>
+
+    <form *ngIf="!loading" (ngSubmit)="updateTask()">
+
+      <!-- Titre -->
+      <div class="form-group">
+        <label for="titre">Titre de la tâche</label>
+        <input id="titre" [(ngModel)]="task.titre" name="titre" required class="form-control" placeholder="Entrez le titre" />
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" [(ngModel)]="task.description" name="description" class="form-control" placeholder="Entrez la description"></textarea>
+      </div>
+
+      <!-- Commentaires -->
+      <div class="form-group">
+        <label for="commentaires">Commentaires</label>
+        <textarea id="commentaires" [(ngModel)]="task.commentaires" name="commentaires" class="form-control" placeholder="Commentaires supplémentaires"></textarea>
+      </div>
+
+      <!-- Statut -->
+      <div class="form-group">
+        <label for="statut">Statut</label>
+        <select id="statut" [(ngModel)]="task.statut" name="statut" class="form-control">
+          <option value="EN_ATTENTE">En attente</option>
+          <option value="EN_COURS">En cours</option>
+          <option value="TERMINEE">Terminé</option>
+        </select>
+      </div>
+
+      <!-- Priorité -->
+      <div class="form-group">
+        <label for="priorite">Priorité</label>
+        <select id="priorite" [(ngModel)]="task.priorite" name="priorite" class="form-control">
+          <option value="BASSE">Basse</option>
+          <option value="NORMALE">Normale</option>
+          <option value="HAUTE">Haute</option>
+        </select>
+      </div>
+
+      <!-- Date de début -->
+      <div class="form-group">
+        <label for="dateDebut">Date de début</label>
+        <input id="dateDebut" [(ngModel)]="task.dateDebut" name="dateDebut" type="datetime-local" class="form-control" />
+      </div>
+
+      <!-- Date de fin -->
+      <div class="form-group">
+        <label for="dateFin">Date de fin</label>
+        <input id="dateFin" [(ngModel)]="task.dateFin" name="dateFin" type="datetime-local" class="form-control" />
+      </div>
+
+      <!-- Temps estimé -->
+      <div class="form-group">
+        <label for="tempsEstime">Temps estimé (en heures)</label>
+        <input id="tempsEstime" [(ngModel)]="task.tempsEstime" name="tempsEstime" type="number" min="0" class="form-control" placeholder="Temps estimé en heures" />
+      </div>
+
+      <!-- Temps passé -->
+      <div class="form-group">
+        <label for="tempsPasse">Temps passé (en heures)</label>
+        <input id="tempsPasse" [(ngModel)]="task.tempsPasse" name="tempsPasse" type="number" min="0" class="form-control" placeholder="Temps passé en heures" />
+      </div>
+
+      <!-- Catégorie -->
+      <div class="form-group">
+        <label for="categorie">Catégorie</label>
+        <input id="categorie" [(ngModel)]="task.categorie" name="categorie" class="form-control" placeholder="Catégorie de la tâche" />
+      </div>
+
+      <!-- Responsable (ex: id ou nom) -->
+      <div class="form-group">
+        <label for="responsable">Responsable</label>
+        <input id="responsable" [(ngModel)]="task.responsable" name="responsable" class="form-control" placeholder="Nom ou ID du responsable" />
+      </div>
+
+      <!-- Projet -->
+      <div class="form-group">
+        <label for="projet">Projet</label>
+        <input id="projet" [(ngModel)]="task.projet" name="projet" class="form-control" placeholder="Nom ou ID du projet" />
+      </div>
+
+      <!-- Boutons -->
+      <div class="form-group">
+        <button type="submit" [disabled]="loading" class="btn btn-primary">Mettre à jour</button>
+        <button type="button" (click)="closeModal()" class="btn btn-secondary">Annuler</button>
+      </div>
+
+    </form>
+  </div>
+</div>

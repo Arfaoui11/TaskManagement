@@ -1,0 +1,6 @@
+/* Par exemple dans app.component.css */
+.app-background {
+    background: linear-gradient(to right, #ffffff, #ffffff); /* Votre nouveau dégradé */
+    min-height: 100vh; /* Assure que le fond couvre toute la hauteur de la fenêtre */
+  }
+  

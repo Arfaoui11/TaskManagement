@@ -1,0 +1,73 @@
+<div class="page-container">
+  <app-sidebar></app-sidebar>
+  <div class="main-content">
+    <app-topbar></app-topbar>
+    <h2>Modifier un utilisateur</h2>
+    <form [formGroup]="updateUserForm" (ngSubmit)="onSubmit()">
+      <!-- Champs du formulaire -->
+      <div class="form-group">
+        <label for="username">Nom d'utilisateur :</label>
+        <input id="username" type="text" formControlName="username" />
+      </div>
+      <div class="form-group">
+        <label for="email">Email :</label>
+        <input id="email" type="email" formControlName="email" />
+      </div>
+      <div class="form-group">
+        <label for="password">Mot de passe :</label>
+        <input id="password" type="password" formControlName="password" />
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirmer le mot de passe :</label>
+        <input id="confirmPassword" type="password" formControlName="confirmPassword" />
+      </div>
+      <div class="form-group">
+        <label for="firstName">Prénom :</label>
+        <input id="firstName" type="text" formControlName="firstName" />
+      </div>
+      <div class="form-group">
+        <label for="lastName">Nom :</label>
+        <input id="lastName" type="text" formControlName="lastName" />
+      </div>
+      <div class="form-group">
+        <label for="phoneNumber">Téléphone :</label>
+        <input id="phoneNumber" type="text" formControlName="phoneNumber" />
+      </div>
+      <div class="form-group">
+        <label for="dateOfBirth">Date de naissance :</label>
+        <input id="dateOfBirth" type="date" formControlName="dateOfBirth" />
+      </div>
+      <div class="form-group">
+        <label for="gender">Genre :</label>
+        <select id="gender" formControlName="gender">
+          <option value="MALE">MALE</option>
+          <option value="FEMALE">FEMALE</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="position">Poste :</label>
+        <input id="position" type="text" formControlName="position" />
+      </div>
+      <div class="form-group">
+        <label for="address">Adresse :</label>
+        <input id="address" type="text" formControlName="address" />
+      </div>
+      <div class="form-group">
+        <label for="role">Rôle :</label>
+        <select id="role" formControlName="role">
+          <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="team">Équipe :</label>
+        <input id="team" type="text" formControlName="team" />
+      </div>
+      <div class="form-group">
+        <label for="activated">Activé :</label>
+        <input id="activated" type="checkbox" formControlName="activated" />
+      </div>
+      <button type="submit" [disabled]="updateUserForm.invalid">Mettre à jour</button>
+    </form>
+    <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
+  </div>
+</div>

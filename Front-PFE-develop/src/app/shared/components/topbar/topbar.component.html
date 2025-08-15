@@ -1,0 +1,34 @@
+
+<div class="topbar">
+  <div class="left-section">
+    <!-- contenu gauche -->
+  </div>
+
+  <div class="right-section">
+    <button class="topbar-btn" routerLink="/calendar">
+      <i class="fas fa-calendar-alt"></i>
+    </button>
+
+    <!-- Ici tu remplaces ou ajoutes le composant notifications -->
+    <div class="notifications">
+      <app-notification></app-notification>
+    </div>
+
+    <!-- Menu utilisateur avec dropdown -->
+    <div class="user-menu-container">
+      <div class="user-menu-trigger">
+        <img src="assets/images/avatar.png" alt="User" class="user-avatar" />
+        <span class="username">{{ currentUser?.firstName }}</span>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+
+      <div class="user-dropdown">
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-item logout" (click)="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Déconnexion</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

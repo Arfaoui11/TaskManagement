@@ -1,0 +1,227 @@
+/* Structure principale */
+.statistics-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/* Sidebar pleine hauteur */
+app-sidebar {
+  width: 250px;
+  background: #fff;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+}
+
+/* Contenu principal */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Cartes de graphiques */
+.chart-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.chart-card h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 400px;
+  min-height: 300px;
+}
+
+/* Section des graphiques */
+.charts-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 20px;
+}
+
+/* Section de contrôles */
+.controls-section {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+}
+
+.controls-section h2 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.control-item {
+  margin-bottom: 15px;
+}
+
+.control-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #5a6a7e;
+}
+
+.control-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+}
+
+/* Checkboxes */
+.responsable-checkboxes, .project-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-input {
+  width: 16px;
+  height: 16px;
+}
+
+.checkbox-label {
+  font-size: 0.9rem;
+  color: #5a6a7e;
+}
+
+/* Tableau récapitulatif */
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.summary-table th {
+  background-color: #f8f9fa;
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #5a6a7e;
+  border-bottom: 2px solid #eee;
+}
+
+.summary-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  color: #5a6a7e;
+}
+
+.summary-table tr:hover td {
+  background-color: #f5f7fa;
+}
+
+/* Colonnes spécifiques */
+.completed {
+  color: #28a745 !important;
+  font-weight: 500;
+}
+
+.in-progress {
+  color: #17a2b8 !important;
+  font-weight: 500;
+}
+
+.overdue {
+  color: #dc3545 !important;
+  font-weight: 500;
+}
+
+/* Barres de progression */
+.progress-container {
+  width: 100%;
+  background-color: #e9ecef;
+  border-radius: 20px;
+  height: 24px;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 20px;
+  background-color: #4e73df;
+  position: relative;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  position: absolute;
+  right: 5px;
+  color: white;
+  font-size: 0.7rem;
+  line-height: 24px;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  background-color: #e9ecef;
+  color: #5a6a7e;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .charts-section {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-wrapper {
+    height: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .statistics-container {
+    flex-direction: column;
+  }
+  
+  app-sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+  }
+  
+  .controls-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .responsable-checkboxes, .project-checkboxes {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}

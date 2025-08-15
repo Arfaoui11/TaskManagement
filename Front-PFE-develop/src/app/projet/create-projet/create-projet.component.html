@@ -1,0 +1,64 @@
+<div class="projet-form-container">
+  <app-sidebar></app-sidebar>
+
+  <!-- Contenu principal -->
+  <div class="main-content">
+    <!-- Barre supérieure -->
+    <app-topbar></app-topbar>
+  <h2>Créer un Nouveau Projet</h2>
+
+  <form (ngSubmit)="onSubmit(projetForm)" #projetForm="ngForm">
+    <!-- Champ pour le titre -->
+    <div class="form-group">
+      <label for="title">Titre du Projet*</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        [(ngModel)]="projet.title"
+        required
+        minlength="3"
+        #title="ngModel"
+      />
+      <!-- Messages d'erreur -->
+      <div *ngIf="title.invalid && (title.dirty || title.touched)" class="error-message">
+        <div *ngIf="title.errors?.['required']">Le titre est obligatoire.</div>
+        <div *ngIf="title.errors?.['minlength']">
+          Le titre doit contenir au moins 3 caractères.
+        </div>
+      </div>
+    </div>
+
+    <!-- Champ pour la description -->
+    <div class="form-group">
+      <label for="description">Description*</label>
+      <textarea
+        id="description"
+        name="description"
+        [(ngModel)]="projet.description"
+        required
+        #description="ngModel"
+      ></textarea>
+      <!-- Messages d'erreur -->
+      <div *ngIf="description.invalid && (description.dirty || description.touched)" class="error-message">
+        <div *ngIf="description.errors?.['required']">La description est obligatoire.</div>
+      </div>
+    </div>
+
+    <!-- Message d'erreur général -->
+    <div *ngIf="errorMessage" class="error-message general-error">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Boutons d'action -->
+    <div class="form-actions">
+      <button type="button" class="cancel-btn" (click)="onCancel()" [disabled]="isLoading">
+        Annuler
+      </button>
+      <button type="submit" class="submit-btn" [disabled]="projetForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Créer le Projet</span>
+        <span *ngIf="isLoading">Création en cours...</span>
+      </button>
+    </div>
+  </form>
+</div>

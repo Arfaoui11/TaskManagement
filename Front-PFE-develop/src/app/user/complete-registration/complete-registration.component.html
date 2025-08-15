@@ -1,0 +1,55 @@
+<app-topbar></app-topbar>
+
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <form (ngSubmit)="onCompleteRegistration()" [formGroup]="registrationForm">
+      <div *ngIf="successMessage" class="alert alert-success">
+        {{ successMessage }}
+      </div>
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+  
+      <label for="username">Nom d'utilisateur</label>
+      <input type="text" id="username" formControlName="username" />
+  
+      <label for="email">Email</label>
+      <input type="email" id="email" formControlName="email" />
+  
+      <label for="password">Mot de passe</label>
+      <input type="password" id="password" formControlName="password" />
+  
+      <label for="confirmPassword">Confirmer le mot de passe</label>
+      <input type="password" id="confirmPassword" formControlName="confirmPassword" />
+  
+      <label for="firstName">Prénom</label>
+      <input type="text" id="firstName" formControlName="firstName" />
+  
+      <label for="lastName">Nom</label>
+      <input type="text" id="lastName" formControlName="lastName" />
+  
+      <label for="phoneNumber">Numéro de téléphone</label>
+      <input type="text" id="phoneNumber" formControlName="phoneNumber" />
+  
+      <label for="dateOfBirth">Date de naissance</label>
+      <input type="date" id="dateOfBirth" formControlName="dateOfBirth" />
+  
+      <label for="gender">Genre</label>
+      <select id="gender" formControlName="gender">
+        <option value="MALE">Homme</option>
+        <option value="FEMALE">Femme</option>
+        <option value="OTHER">Autre</option>
+      </select>
+  
+      <label for="position">Poste</label>
+      <input type="text" id="position" formControlName="position" />
+  
+      <label for="address">Adresse</label>
+      <input type="text" id="address" formControlName="address" />
+  
+      <button type="submit">S'inscrire</button>
+    </form>
+  </div>
+</div>

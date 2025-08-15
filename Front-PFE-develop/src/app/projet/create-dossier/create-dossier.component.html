@@ -1,0 +1,40 @@
+<div class="create-projet-container">
+    <app-sidebar></app-sidebar>
+  
+    <!-- Contenu principal -->
+    <div class="main-content">
+      <!-- Barre supérieure (Topbar) -->
+      <app-topbar></app-topbar>
+  
+    <h2>Créer un Nouveau Dossier</h2>
+<form [formGroup]="dossierForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Nom du Dossier</label>
+      <input
+        type="text"
+        id="name"
+        formControlName="name"
+        placeholder="Entrez le nom du dossier"
+      />
+      <div
+        *ngIf="dossierForm.get('name')?.invalid && (dossierForm.get('name')?.dirty || dossierForm.get('name')?.touched)"
+        class="error-message"
+      >
+        <div *ngIf="dossierForm.get('name')?.errors?.['required']">
+          Le nom du dossier est obligatoire.
+        </div>
+        <div *ngIf="dossierForm.get('name')?.errors?.['minlength']">
+          Le nom doit contenir au moins 3 caractères.
+        </div>
+      </div>
+    </div>
+  
+    <!-- Sélecteur d'utilisateur -->
+  
+  
+    <div class="form-group">
+      <button type="submit" [disabled]="dossierForm.invalid">Créer le Dossier</button>
+<button type="button" class="btn btn-secondary ml-2" (click)="onCancel()">Annuler</button>
+
+    </div>
+  </form>

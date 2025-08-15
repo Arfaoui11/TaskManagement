@@ -1,0 +1,79 @@
+<div class="document-details-container">
+  <!-- Barre latérale -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Contenu principal -->
+  <div class="main-content">
+    <!-- Barre supérieure -->
+    <app-topbar></app-topbar>
+
+    <!-- Indicateur de chargement -->
+    <div *ngIf="isLoading; else content">
+      <p>Chargement en cours...</p>
+    </div>
+
+    <!-- Contenu du document -->
+    <ng-template #content>
+      <div *ngIf="document; else notFound">
+        <h2>Détails du document</h2>
+
+        <!-- Informations du document -->
+        <div class="document-info">
+          <p><strong>Nom :</strong> {{ document.name }}</p>
+          <p><strong>Type :</strong> {{ document.type }}</p>
+          <p *ngIf="document.createdAt">
+            <strong>Date de création :</strong> {{ document.createdAt | date: 'dd/MM/yyyy HH:mm' }}
+          </p>
+          <p *ngIf="document.fileSize">
+            <strong>Taille :</strong> {{ document.fileSize }}
+          </p>
+        </div>
+
+        <!-- Dossier associé -->
+        <div *ngIf="document.dossier" class="dossier-info">
+          <h3>Dossier associé</h3>
+          <p><strong>Nom du dossier :</strong> {{ document.dossier.name }}</p>
+          <p *ngIf="document.dossier.createdAt">
+            <strong>Date de création :</strong> {{ document.dossier.createdAt | date: 'dd/MM/yyyy HH:mm' }}
+          </p>
+        </div>
+
+        <!-- Affichage du contenu du fichier -->
+        <div class="document-preview">
+          <!-- Image -->
+          <img *ngIf="document.type.startsWith('image') && document.content" 
+               [src]="'data:' + document.type + ';base64,' + document.content" 
+               alt="Image du document" 
+               class="document-image" />
+          
+          <!-- PDF -->
+          <iframe *ngIf="document.type === 'application/pdf' && safeUrl" 
+                  [src]="safeUrl" 
+                  class="document-pdf"></iframe>
+          
+          <!-- Texte brut -->
+          <pre *ngIf="document.type.startsWith('text') && decodedContent" 
+               class="document-text">{{ decodedContent }}</pre>
+          
+          <!-- Téléchargement -->
+          <div class="document-actions">
+            <button (click)="downloadFile()" 
+                    class="btn btn-primary">
+              Télécharger le fichier
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message si le document n'est pas trouvé -->
+      <ng-template #notFound>
+        <div class="not-found-message">
+          <p class="error-message">{{ errorMessage || "Document non trouvé." }}</p>
+          <button (click)="goBack()" class="btn btn-primary">
+            Retour à la liste
+          </button>
+        </div>
+      </ng-template>
+    </ng-template>
+  </div>
+</div>

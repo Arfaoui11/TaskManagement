@@ -1,0 +1,134 @@
+/* Conteneur général */
+.page-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6f8;
+}
+
+/* Contenu principal */
+.main-content {
+  flex: 1;
+  padding: 40px;
+  background-color: #fff;
+}
+
+/* Titre */
+h2 {
+  font-size: 24px;
+  margin-bottom: 25px;
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+/* Formulaire */
+form {
+  max-width: 700px;
+  margin: auto;
+  background-color: #fafafa;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
+}
+
+/* Groupe de champs */
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Étiquettes */
+label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+/* Champs de saisie */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+select {
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1px solid #cfd8dc;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s ease-in-out;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+select:focus {
+  border-color: #66bb6a;
+}
+
+/* Case à cocher */
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 5px;
+}
+
+/* Bouton de soumission */
+button[type="submit"] {
+  background-color: #388e3c;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[disabled] {
+  background-color: #c8e6c9;
+  cursor: not-allowed;
+}
+
+button[type="submit"]:hover:not([disabled]) {
+  background-color: #2e7d32;
+}
+
+/* Message de succès */
+.success-message {
+  margin-top: 20px;
+  color: #2e7d32;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 20px;
+  }
+
+  form {
+    padding: 20px;
+  }
+}
+.page-container {
+  display: flex;
+  min-height: 100vh;
+  align-items: stretch; /* s'assurer que les enfants s'étendent sur toute la hauteur */
+}
+
+app-sidebar {
+  height: auto;
+  min-height: 100vh; /* Fait en sorte que la sidebar occupe toute la hauteur */
+  background-color: #e8f5e9; /* pour visualiser */
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+  background: white;
+}

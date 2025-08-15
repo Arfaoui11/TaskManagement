@@ -1,0 +1,178 @@
+<!-- Dossiers -->
+<div class="dossier-container">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <app-topbar></app-topbar>
+    
+   
+    
+    <div class="root-actions">
+      <button (click)="creerDossierRacine()">➕ Nouveau dossier</button>
+      <button (click)="creerDocumentRacine()">➕ Nouveau document</button>
+    </div>
+    
+    <!-- Messages d'erreur -->
+    <div *ngIf="dossierError" class="error">{{ dossierError }}</div>
+    <div *ngIf="documentError" class="error">{{ documentError }}</div>
+
+    <h2>📄 Documents</h2>
+
+    <!-- 📄 Documents à la racine -->
+    <div class="card-grid" *ngIf="documentsRacine.length > 0">
+      <ng-container *ngFor="let doc of documentsRacine">
+        <div class="card" (click)="selectDocument(doc)">
+          <div class="card-header">
+            <h4>
+              <span *ngIf="doc.type?.includes('text')">📝</span>
+              <span *ngIf="doc.type?.includes('image')">🖼️</span>
+              <span *ngIf="doc.type?.includes('pdf')">📕</span>
+              <span *ngIf="!doc.type?.includes('text') && !doc.type?.includes('image') && !doc.type?.includes('pdf')">📄</span>
+              {{ doc.name }}
+            </h4>
+            <div class="menu">
+              ⋮
+              <div class="dropdown">
+                <button (click)="selectDocument(doc); $event.stopPropagation()">Ouvrir</button>
+                <button (click)="downloadDocument(doc); $event.stopPropagation()">Télécharger</button>
+                <button (click)="archiverDocument(doc); $event.stopPropagation()">Archiver</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Affichage des documents racines vide -->
+    <div *ngIf="documentsRacine.length === 0" class="no-documents">
+      <p>Aucun document à la racine disponible pour ce projet.</p>
+    </div>
+
+    <h2>📁 Dossiers</h2>
+
+    <!-- Affichage des dossiers -->
+    <div class="card-grid" *ngIf="dossiers.length > 0">
+      <ng-container *ngFor="let dossier of dossiers">
+        <div class="card" (click)="selectDossier(dossier)"
+               (dblclick)="closeSelectedDossier(dossier)">
+
+          <div class="card-header">
+            <h4>📁 {{ dossier.name }}</h4>
+            <div class="menu">
+              ⋮
+              <div class="dropdown">
+                <button (click)="archiverDossier(dossier); $event.stopPropagation()">Archiver</button>
+                <button (click)="ajouterDocument(dossier); $event.stopPropagation()">Ajouter document</button>
+                <button (click)="ajouterDossier(dossier); $event.stopPropagation()">Ajouter dossier</button>
+                <button (click)="voirDetails(dossier); $event.stopPropagation()">Voir détails</button>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="dossier.subDossiers?.length">
+            <ng-container *ngFor="let sub of dossier.subDossiers">
+              <div class="sub-card" (click)="selectDossier(sub)" 
+     (dblclick)="closeSelectedDossier(sub); $event.stopPropagation()">
+                <div class="card-header">
+                  📂 {{ sub.name }}
+                  <div class="menu">
+                    ⋮
+                    <div class="dropdown">
+                      <button (click)="archiverDossier(sub); $event.stopPropagation()">Archiver</button>
+                      <button (click)="ajouterDocument(sub); $event.stopPropagation()">Ajouter document</button>
+                      <button (click)="ajouterDossier(sub); $event.stopPropagation()">Ajouter dossier</button>
+                      <button (click)="voirDetails(sub); $event.stopPropagation()">Voir détails</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Message si aucun dossier -->
+    <div *ngIf="dossiers.length === 0" class="no-dossiers">
+      <p>Aucun dossier disponible pour ce projet.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Pop-up pour afficher les détails du dossier -->
+<div class="dossier-details-popup" *ngIf="showDossierDetails">
+  <div class="popup-content">
+    <button class="close-btn" (click)="closeDossierDetails()">✖</button>
+    <h3>🗂️ Détails du dossier</h3>
+    <div *ngIf="selectedDossierDetails">
+      <p><strong>Nom :</strong> {{ selectedDossierDetails.name }}</p>
+      <p><strong>Projet :</strong> {{ selectedDossierDetails.projet?.title }}</p>
+      <p><strong>Date de création :</strong> {{ selectedDossierDetails.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Contenu du dossier sélectionné (Documents + Sous-dossiers) -->
+<div class="content-container" *ngIf="selectedDossier">
+  <h2>📄 Contenu du dossier</h2>
+
+  <div>
+    <h3>{{ selectedDossier.name }}</h3>
+
+    <!-- Sous-dossiers -->
+    <div *ngIf="selectedDossier.subDossiers?.length" class="section">
+      <h4>📂 Sous-dossiers</h4>
+      <div class="grid">
+        <div class="content-card" *ngFor="let subDossier of selectedDossier.subDossiers" 
+             (click)="selectDossier(subDossier)">
+          <div class="content-header">
+            <span class="icon">📂</span>
+            {{ subDossier.name }}
+          </div>
+          <div class="menu">
+            ⋮
+            <div class="dropdown">
+              <button (click)="archiverDossier(subDossier); $event.stopPropagation()">Archiver</button>
+              <button (click)="ajouterDocument(subDossier); $event.stopPropagation()">Ajouter document</button>
+              <button (click)="ajouterDossier(subDossier); $event.stopPropagation()">Ajouter dossier</button>
+              <button (click)="voirDetails(subDossier); $event.stopPropagation()">Voir détails</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Documents -->
+    <div *ngIf="filteredDocuments.length" class="section">
+      <h4>📄 Documents</h4>
+      <div class="grid">
+        <div class="content-card" *ngFor="let doc of filteredDocuments" 
+             (click)="selectDocument(doc)">
+          <div class="content-header">
+            <span class="icon">
+              <span *ngIf="doc.type?.includes('text')">📝</span>
+              <span *ngIf="doc.type?.includes('image')">🖼️</span>
+              <span *ngIf="doc.type?.includes('pdf')">📕</span>
+              <span *ngIf="!doc.type?.includes('text') && !doc.type?.includes('image') && !doc.type?.includes('pdf')">📄</span>
+            </span>
+            {{ doc.name }}
+          </div>
+          <div class="menu">
+            ⋮
+            <div class="dropdown">
+              <button (click)="selectDocument(doc); $event.stopPropagation()">Ouvrir</button>
+              <button (click)="downloadDocument(doc); $event.stopPropagation()">Télécharger</button>
+              <button (click)="archiverDocument(doc); $event.stopPropagation()">Archiver</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message si vide -->
+    <div *ngIf="!selectedDossier.subDossiers?.length && !filteredDocuments.length" class="empty-message">
+      Ce dossier est vide.
+    </div>
+  </div>
+</div>
+

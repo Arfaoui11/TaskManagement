@@ -1,0 +1,198 @@
+<div class="statistics-container">
+    <app-sidebar></app-sidebar>
+  
+    <div class="main-content">
+        <app-topbar></app-topbar>
+
+        <!-- Section principale des graphiques -->
+        <div class="charts-section">
+            <!-- Graphique des statuts généraux -->
+            <div class="chart-card">
+                <h2>Statut des Tâches</h2>
+                <div class="chart-wrapper">
+                  <canvas 
+  *ngIf="barChartLabels.length && barChartData.length"
+  baseChart
+  [data]="{
+    labels: barChartLabels, 
+    datasets: [{ 
+      data: barChartData, 
+      backgroundColor: ['#4CAF50', '#FF5722', '#FF9800', '#2196F3'] 
+    }]
+  }"
+  [type]="barChartType"
+  [options]="barChartOptions">
+</canvas>
+
+                </div>
+            </div>
+
+            <!-- Graphique de progression par projet -->
+            <div class="chart-card" *ngIf="projectProgressData.length > 0">
+                <h2>Progression des Projets</h2>
+                <div class="chart-wrapper">
+                    <canvas 
+                        baseChart
+                        [data]="{ labels: projectProgressLabels, datasets: projectProgressData }"
+                        [type]="projectProgressType"
+                        [options]="projectProgressOptions">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section de contrôles -->
+        <div class="controls-section card">
+            <h2>Filtres et Sélections</h2>
+            
+            <div class="controls-grid">
+                <!-- Sélecteur d'année -->
+                <div class="control-item">
+                    <label for="year-select" class="control-label">Année :</label>
+                    <select 
+                        id="year-select" 
+                        class="control-select"
+                        [(ngModel)]="selectedYear" 
+                        (change)="onYearChange(selectedYear)">
+                        <option *ngFor="let year of getAvailableYears()" [value]="year">
+                            {{ year }}
+                        </option>
+                    </select>
+                </div>
+                
+                <!-- Sélecteur de responsables -->
+                <div class="control-item responsable-selector" *ngIf="availableResponsables && availableResponsables.length > 0">
+                    <span class="control-label">Responsables :</span>
+                    <div class="responsable-checkboxes">
+                        <div *ngFor="let responsable of availableResponsables" class="checkbox-item">
+                            <input 
+                                type="checkbox" 
+                                class="checkbox-input"
+                                [id]="'responsable-' + responsable"
+                                [checked]="selectedResponsables.includes(responsable)"
+                                (change)="onResponsableCheckboxChange(responsable, $event)">
+                            <label [for]="'responsable-' + responsable" class="checkbox-label">
+                                Responsable {{ responsable }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message si aucun responsable trouvé -->
+                <div class="control-item" *ngIf="!availableResponsables || availableResponsables.length === 0">
+                    <span class="control-label" style="color: #ff6b6b;">
+                        Aucun responsable trouvé dans les tâches
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Graphiques pour les responsables -->
+        <div class="charts-section">
+            <!-- Graphique en barres pour les responsables -->
+            <div class="chart-card" *ngIf="selectedResponsables && selectedResponsables.length > 0 && responsableStatsLabels && responsableStatsLabels.length > 0">
+                <div class="card-header">
+                    <h2>Statistiques par Responsable</h2>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas 
+                        baseChart
+                        [data]="{ labels: responsableStatsLabels, datasets: responsableStatsData }"
+                        [type]="responsableStatsType"
+                        [options]="responsableStatsOptions">
+                    </canvas>
+                </div>
+            </div>
+
+            <!-- Message si aucun responsable sélectionné -->
+            <div class="chart-card" *ngIf="!selectedResponsables || selectedResponsables.length === 0">
+                <div class="card-header">
+                    <h2 style="color: #ff6b6b;">Statistiques par Responsable - Non disponible</h2>
+                    <p>Sélectionnez au moins un responsable pour voir les statistiques.</p>
+                </div>
+            </div>
+
+            <!-- Graphique en radar pour comparer les responsables -->
+            <div class="chart-card" *ngIf="selectedResponsables && selectedResponsables.length > 1 && responsableRadarData && responsableRadarData.datasets">
+                <div class="card-header">
+                    <h2>Comparaison des Responsables</h2>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas 
+                        baseChart
+                        [data]="responsableRadarData"
+                        [type]="responsableRadarType"
+                        [options]="responsableRadarOptions">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableau récapitulatif par responsable -->
+        <div class="summary-section card" *ngIf="selectedResponsables && selectedResponsables.length > 0">
+            <div class="card-header">
+                <h3>Récapitulatif par Responsable</h3>
+                <span class="badge">{{ selectedResponsables.length }} responsables sélectionnés</span>
+            </div>
+            
+            <!-- Sélecteur de projets -->
+            <div class="control-item project-selector">
+                <span class="control-label">Projets :</span>
+                <div class="project-checkboxes">
+                    <div *ngFor="let project of availableProjects" class="checkbox-item">
+                        <input 
+                            type="checkbox" 
+                            class="checkbox-input"
+                            [id]="'project-' + project"
+                            [checked]="selectedProjects.includes(project)"
+                            (change)="onProjectCheckboxChange(project, $event)">
+                        <label [for]="'project-' + project" class="checkbox-label">{{ project }}</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tableau récapitulatif -->
+            <div class="table-responsive">
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Responsable</th>
+                            <th>Total Tâches</th>
+                            <th>Terminées</th>
+                            <th>En cours</th>
+                            <th>En retard</th>
+                            <th>Temps passé</th>
+                            <th class="progress-column">Progression</th>
+                            <th>Productivité</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let responsable of selectedResponsables">
+                            <td class="project-name">Responsable {{ responsable }}</td>
+                            <td>{{ getResponsableTaskCount(responsable) }}</td>
+                            <td class="completed">{{ getResponsableCompletedCount(responsable) }}</td>
+                            <td class="in-progress">{{ getResponsableInProgressCount(responsable) }}</td>
+                            <td class="overdue">{{ getResponsableOverdueCount(responsable) }}</td>
+                            <td>{{ getResponsableTotalTime(responsable) }}h</td>
+                            <td>
+                                <div class="progress-container">
+                                    <div class="progress-bar" [style.width.%]="getResponsableAverageProgress(responsable)">
+                                        <span class="progress-text">{{ getResponsableAverageProgress(responsable) | number:'1.0-0' }}%</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="progress-container">
+                                    <div class="progress-bar" [style.width.%]="getResponsableProductivity(responsable)" 
+                                        [style.background-color]="'#8e44ad'">
+                                        <span class="progress-text">{{ getResponsableProductivity(responsable) | number:'1.0-0' }}%</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

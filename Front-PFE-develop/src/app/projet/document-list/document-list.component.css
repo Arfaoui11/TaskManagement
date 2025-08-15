@@ -1,0 +1,267 @@
+/* Style général du conteneur */
+.document-list-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f5f7fa;
+}
+
+/* Titre */
+h2 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* Boutons de création et retour */
+.create-button-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.create-button-container button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.create-button-container button:first-child {
+  background-color: #3498db;
+  color: white;
+}
+
+.create-button-container button:first-child:hover {
+  background-color: #2980b9;
+}
+
+.create-button-container button:last-child {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.create-button-container button:last-child:hover {
+  background-color: #7f8c8d;
+}
+
+/* Onglets */
+.tabs-container {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabs-container button {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #7f8c8d;
+  position: relative;
+}
+
+.tabs-container button.active {
+  color: #3498db;
+  font-weight: bold;
+}
+
+.tabs-container button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #3498db;
+}
+
+/* Message quand aucun document */
+.no-documents-message {
+  padding: 20px;
+  background-color: white;
+  border-radius: 4px;
+  text-align: center;
+  color: #7f8c8d;
+}
+
+/* Grille de documents */
+.documents-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* Carte de document */
+.document-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.document-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.document-card.archived {
+  opacity: 0.8;
+  border-left: 4px solid #95a5a6;
+}
+
+.document-card h3 {
+  margin-top: 0;
+  color: #2c3e50;
+  font-size: 18px;
+}
+
+.document-card p {
+  margin: 8px 0;
+  color: #7f8c8d;
+  font-size: 14px;
+}
+
+.archived-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #e74c3c;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Menu déroulant */
+.dropdown {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #7f8c8d;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+
+.dropdown-toggle:hover {
+  background-color: #f0f0f0;
+  color: #3498db;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  min-width: 180px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: 6px;
+  z-index: 10;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-menu button {
+  padding: 10px 15px;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #2c3e50;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.dropdown-menu button:hover {
+  background-color: #f8f9fa;
+}
+
+.dropdown-menu .delete-btn {
+  color: #e74c3c;
+}
+
+/* Modal de confirmation */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 25px;
+  border-radius: 8px;
+  max-width: 450px;
+  width: 90%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #2c3e50;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.modal-actions button:first-child {
+  background-color: #3498db;
+  color: white;
+}
+
+.modal-actions button:first-child:hover {
+  background-color: #2980b9;
+}
+
+.modal-actions button:last-child {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.modal-actions button:last-child:hover {
+  background-color: #7f8c8d;
+}

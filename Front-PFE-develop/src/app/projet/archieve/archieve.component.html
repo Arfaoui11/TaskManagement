@@ -1,0 +1,37 @@
+<div class="archive-container">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <app-topbar></app-topbar>
+    
+    <!-- Dossiers Section -->
+    <h2>Dossiers Archivés</h2>
+    <div *ngFor="let dossier of dossiers" class="archive-item">
+      <p>{{ dossier.name }}</p>
+      <button class="restore-btn" (click)="restoreDossier(dossier.id)">Restaurer</button>
+      <button class="delete-button" (click)="deleteDossier(dossier.id)">Supprimer</button>
+
+    </div>
+    <div *ngIf="dossiers.length === 0" class="empty-section">Aucun dossier archivé</div>
+
+    <!-- Projets Section -->
+    <h2>Projets Archivés</h2>
+    <div *ngFor="let projet of projets" class="archive-item">
+      <p>{{ projet.title }}</p>
+      <button class="restore-btn" (click)="restoreProjet(projet.id)">Restaurer</button>
+      <button class="delete-button" (click)="deleteProjet(projet.id)">Supprimer</button>
+
+    </div>
+    <div *ngIf="projets.length === 0" class="empty-section">Aucun projet archivé</div>
+
+    <!-- Documents Section -->
+    <h2>Documents Archivés</h2>
+    <div *ngFor="let document of documents" class="archive-item">
+      <p>{{ document.name }}</p>
+      <button class="restore-btn" (click)="restoreDocument(document.id!)">Restaurer</button>
+      <button class="delete-button" (click)="deleteDocument(document.id)">Supprimer</button>
+
+    </div>
+    <div *ngIf="documents.length === 0" class="empty-section">Aucun document archivé</div>
+  </div>
+</div>

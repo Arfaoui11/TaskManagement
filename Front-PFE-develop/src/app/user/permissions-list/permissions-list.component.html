@@ -1,0 +1,47 @@
+    <div class="container">
+  <!-- Barre latérale -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Contenu principal -->
+  <div class="main-content">
+      <!-- Barre supérieure (Topbar) -->
+      <app-topbar></app-topbar>
+  <h2>Permissions</h2>
+
+  <form (ngSubmit)="savePermission()">
+    <input type="text" [(ngModel)]="newPermission.name" name="name" placeholder="Permission name" required />
+    
+   
+
+    <button type="submit">{{ editMode ? 'Modifier' : 'Crée' }}</button>
+    <button type="button" (click)="resetForm()" *ngIf="editMode">annuler</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>nom</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let perm of paginatedPermissions">
+        <td>{{ perm.id }}</td>
+        <td>{{ perm.name }}</td>
+        <td>
+          <button (click)="editPermission(perm)">Modifier</button>
+          <button (click)="deletePermission(perm.id)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="pagination">
+  <button
+    *ngFor="let page of totalPages"
+    (click)="changePage(page)"
+    [class.active]="page === currentPage"
+  >
+    {{ page }}
+  </button>
+</div>

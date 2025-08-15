@@ -1,0 +1,61 @@
+<div class="team-list-container">
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <app-topbar></app-topbar>
+    
+  <div class="main-content">
+      <h2>Liste des équipes</h2>
+      
+      <button class="create-btn" (click)="openPopup()">+ Créer une équipe</button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">
+      Chargement des équipes...
+    </div>
+
+    <table *ngIf="!isLoading && teams.length > 0">
+      <thead>
+        <tr>
+          <th>Nom de l'équipe</th>
+          <th>Membres</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let team of teams">
+          <td>{{ team.name }}</td>
+          <td>
+            <button class="user-btn" (click)="manageUsers(team.id!)">
+              <i class="fas fa-users"></i> Gérer
+            </button>
+          </td>
+          <td class="actions">
+            <button class="edit-btn" (click)="editTeam(team.id!)">
+              <i class="fas fa-edit"></i> Modifier
+            </button>
+            <button class="delete-btn" (click)="deleteTeam(team.id!)">
+              <i class="fas fa-trash-alt"></i> Supprimer
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="!isLoading && teams.length === 0" class="no-teams">
+      Aucune équipe trouvée.
+    </div>
+  </div>
+</div>
+
+<!-- Fenêtre modale -->
+<div class="modal" *ngIf="isPopupOpen">
+  <div class="modal-content">
+    <h3>Créer une équipe</h3>
+    <input type="text" [(ngModel)]="newTeamName" placeholder="Nom de l'équipe" />
+    <div class="modal-buttons">
+      <button class="confirm-btn" (click)="createTeam()">Créer</button>
+      <button class="cancel-btn" (click)="closePopup()">Annuler</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,97 @@
+<div class="container">
+  <!-- Barre latérale -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Contenu principal -->
+  <div class="main-content">
+    <!-- Barre supérieure (Topbar) -->
+    <app-topbar></app-topbar>
+    
+<div class="search-container">
+      <div class="search-box">
+        <input type="text" 
+               [(ngModel)]="searchTerm" 
+               (input)="filterRoles()"
+               placeholder="Rechercher un rôle...">
+      </div>
+    <!-- Liste des rôles et permissions -->
+<div *ngFor="let role of paginatedRoles" class="role-card">
+      <h3>{{ role.name }}</h3>
+      <ul>
+        <li *ngFor="let permission of role.permissions" class="permission-item">
+          {{ permission.name }}
+          <button *ngIf="role.id" (click)="onDeletePermissionFromRole(role.id!, permission.id)" class="delete-permission-btn">
+            Supprimer la permission
+          </button>
+        </li>
+      </ul>
+      <div class="role-actions">
+        <button (click)="openModal(role)" class="update-role-btn">Mettre à jour</button>
+        <button *ngIf="role.id" (click)="onDeleteRole(role.id)" class="delete-role-btn">Supprimer le rôle</button>
+<button (click)="openPermissionPopup(role)">Affecter permissions</button>
+
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button 
+        *ngFor="let page of totalPages" 
+        (click)="changePage(page)" 
+        [class.active]="page === currentPage">
+        {{ page }}
+      </button>
+    </div>
+
+    <!-- Bouton pour créer un nouveau rôle -->
+    <button (click)="onCreateRole()" class="create-role-btn">Créer un rôle</button>
+  </div>
+
+  <!-- Modal de mise à jour -->
+  <div class="modal-backdrop" *ngIf="showModal">
+    <div class="modal">
+      <h2>Mise à jour du rôle : {{ selectedRole?.name }}</h2>
+      <form (ngSubmit)="onSubmit()" #roleForm="ngForm">
+        <div>
+          <label for="roleName">Nom du rôle:</label>
+          <input
+            type="text"
+            id="roleName"
+            [(ngModel)]="selectedRole.name"
+            name="name"
+            required
+          />
+        </div>
+        <div class="modal-actions">
+          <button type="submit" [disabled]="roleForm.invalid">Enregistrer</button>
+          <button type="button" (click)="closeModal()">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+<div class="popup-backdrop" *ngIf="showPermissionPopup">
+  <div class="popup">
+    <h3>Affecter des permissions à {{ roleForPermission?.name }}</h3>
+    <form>
+   <div *ngFor="let permission of allPermissions" class="permission-item">
+  <label>
+    <span class="permission-text">{{ permission.name }}</span>
+    <input 
+      type="checkbox"
+      [value]="permission.id"
+      [checked]="selectedPermissions.includes(permission.id)"
+      (change)="togglePermission(permission.id, $event)"
+    />
+    <span class="checkmark"></span>
+  </label>
+</div>
+    </form>
+    <div class="popup-buttons">
+      <button (click)="savePermissionsForRole()">Enregistrer</button>
+      <button (click)="showPermissionPopup = false">Annuler</button>
+    </div>
+  </div>
+</div>
+
+
+</div>

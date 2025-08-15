@@ -1,0 +1,34 @@
+<div class="create-team-container">
+  <app-sidebar></app-sidebar>
+
+  <!-- Contenu principal -->
+  <div class="main-content">
+    <app-topbar></app-topbar>
+    <h2>Créer une nouvelle équipe</h2>
+    <button mat-button (click)="openCreateTeamPopup()">Ouvrir le formulaire de création</button>
+
+    <!-- Formulaire Pop-up -->
+    <div class="popup" [ngClass]="{'active': isPopupVisible}">
+      <div class="popup-content">
+        <h2>Créer une nouvelle équipe</h2>
+        <form [formGroup]="teamForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="teamName">Nom de l'équipe</label>
+            <input
+              id="teamName"
+              type="text"
+              formControlName="name"
+              placeholder="Entrez le nom de l'équipe"
+            />
+            <div *ngIf="teamForm.get('name')?.invalid && teamForm.get('name')?.touched">
+              Le nom de l'équipe est requis.
+            </div>
+          </div>
+
+          <button type="submit" [disabled]="teamForm.invalid">Créer l'équipe</button>
+          <button type="button" (click)="closePopup()">Annuler</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

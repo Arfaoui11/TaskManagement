@@ -1,0 +1,111 @@
+<div class="projet-list-container">
+    <app-sidebar></app-sidebar>
+  
+    <!-- Contenu principal -->
+    <div class="main-content">
+      <!-- Barre supérieure (Topbar) -->
+      <app-topbar></app-topbar>
+  
+      <h2>Liste des Projets</h2>
+  
+      <!-- Messages d'erreur/succès -->
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+  
+      <div *ngIf="successMessage" class="success-message">
+        {{ successMessage }}
+      </div>
+  
+      <div class="create-button-container">
+        <button (click)="onCreateProjet()">Créer un Projet</button>
+      </div>
+  
+      <!-- Message si aucun projet n'est trouvé -->
+      <div *ngIf="projets.length === 0" class="no-projets-message">
+        Aucun projet actif trouvé.
+      </div>
+  
+      <!-- Liste des projets sous forme de cartes -->
+ <div *ngIf="projets.length > 0" class="projets-grid">
+  <div *ngFor="let projet of projets" class="projet-card" (dblclick)="onProjectDoubleClick(projet)">
+    <h3>{{ projet.title }}</h3>
+    <p>{{ projet.description }}</p>
+
+    <!-- ✅ Affiche les utilisateurs affectés s’ils existent -->
+   <!-- Nouvel affichage des membres de l'équipe assignée -->
+<!-- Équipe assignée -->
+
+
+
+
+
+
+
+          <div class="card-actions">
+            <div class="dropdown">
+              <button class="dropdown-toggle" (click)="toggleDropdown(projet.id.toString())">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <div *ngIf="openedDropdown === projet.id.toString()" class="dropdown-menu">
+                <button (click)="onViewProjetDetails(projet.id)">Voir les détails</button>
+                <button (click)="openEditPopup(projet)">Modifier</button>
+                <button (click)="confirmArchive(projet.id)">Archiver</button>
+               <button (click)="openAssignTeamModal(projet)">Affecter une équipe</button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+  
+      <!-- Modal d'affectation des utilisateurs -->
+      <!-- Modal d'affectation des utilisateurs -->
+      <!-- Modal d'affectation des utilisateurs -->
+
+  
+  <!-- Modal d'affectation d'équipe -->
+<!-- Modal d'affectation d'équipe -->
+<div *ngIf="showAssignTeamModal" class="modal">
+  <div class="modal-content">
+<h4>Assigner des utilisateurs au projet {{ selectedProjet.title }}</h4>
+
+    <form (ngSubmit)="onAssignTeam()">
+      <label>Sélectionner une équipe :</label>
+      <select [(ngModel)]="selectedTeamId" name="teamSelect" required (change)="loadTeamMembers(selectedTeamId!)">
+        <option *ngFor="let team of teams" [value]="team.id">{{ team.name }}</option>
+      </select>
+
+      <!-- Affichage des membres de l'équipe sélectionnée -->
+<div *ngIf="selectedTeamId !== null && teamMembers[selectedTeamId] && teamMembers[selectedTeamId].length > 0" class="team-members-list">
+        <h5>Membres de l'équipe :</h5>
+        <ul>
+          <li *ngFor="let member of teamMembers[selectedTeamId]">
+            {{ member.email}} ({{ member.email }})
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="selectedTeamId !== null && (!teamMembers[selectedTeamId] || teamMembers[selectedTeamId].length === 0)">
+        <em>Aucun membre dans cette équipe.</em>
+      </div>
+
+      <div class="modal-buttons">
+        <button type="submit" class="btn-primary">Affecter</button>
+        <button type="button" class="btn-secondary" (click)="closeAssignTeamModal()">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+      <!-- Confirmation d'action -->
+      <div *ngIf="pendingAction" class="confirmation-popup">
+        <h4>{{ confirmTitle }}</h4>
+        <p>{{ confirmMessage }}</p>
+        <button (click)="onConfirmAction()">Confirmer</button>
+        <button (click)="onConfirmCancel()">Annuler</button>
+      </div>
+    </div>
+  </div>
+  

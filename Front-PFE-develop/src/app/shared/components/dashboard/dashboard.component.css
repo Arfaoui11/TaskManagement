@@ -1,0 +1,135 @@
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+
+.topbar {
+  grid-column: 1 / -1;
+  height: 70px;
+  background: white;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  z-index: 100;
+}
+
+.sidebar {
+  grid-row: 2;
+  background: #ffffff;
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
+  width: 250px;
+  transition: width 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.main-content {
+  grid-row: 2;
+  padding: 2rem;
+  overflow-y: auto;
+  background-color: #1d4975;
+}
+
+.dashboard-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Styles pour les cartes de contenu */
+.welcome-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  border: 1px solid #c9daf0;
+}
+
+.widgets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.widget-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.75rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  border: 1px solid #eaeff5;
+  cursor: pointer;
+}
+
+.widget-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  border-color: #d6e4ff;
+}
+
+.widget-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #f0f7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  color: #1877f2;
+  font-size: 1.25rem;
+}
+
+.widget-card h3 {
+  color: #2c3e50;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.widget-card p {
+  color: #6c757d;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.widget-action {
+  display: flex;
+  align-items: center;
+  color: #1877f2;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.widget-action i {
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.widget-card:hover .widget-action i {
+  transform: translateX(3px);
+}
+
+/* Titres et textes */
+h1 {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  color: #6c757d;
+  line-height: 1.6;
+  max-width: 600px;
+  font-size: 0.95rem;
+}

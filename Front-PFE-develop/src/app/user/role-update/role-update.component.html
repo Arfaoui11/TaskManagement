@@ -1,0 +1,53 @@
+<app-topbar></app-topbar>
+<div class="main-container">
+  <!-- Sidebar (côté gauche) -->
+  <app-sidebar></app-sidebar>
+  <div class="main-content">
+    <div *ngIf="isLoading; else roleContent">
+      <p>Chargement en cours...</p>
+    </div>
+
+    <ng-template #roleContent>
+      <div *ngIf="role">
+        <h2>Mise à jour du rôle : {{ role.name }}</h2>
+        <form (ngSubmit)="onSubmit()" #roleForm="ngForm">
+          <!-- Nom du rôle -->
+          <div>
+            <label for="roleName">Nom du rôle:</label>
+            <input 
+              type="text" 
+              id="roleName" 
+              [(ngModel)]="role.name" 
+              name="name" 
+              required
+            />
+          </div>
+
+          <!-- Permissions -->
+          <div>
+            <label for="permissions">Permissions:</label>
+            <div *ngFor="let permission of permissions; let i = index">
+              <input
+                type="text"
+                [(ngModel)]="permission.name"
+                [name]="'permissionName' + i"
+                placeholder="Permission name"
+              />
+              <input
+                type="checkbox"
+                [(ngModel)]="permission.selected"
+                [name]="'permissionSelected' + i"
+              />
+            </div>
+          </div>
+
+          <!-- Boutons -->
+          <div>
+            <button type="submit" [disabled]="roleForm.invalid">Enregistrer</button>
+            <button type="button" (click)="onCancel()">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </ng-template>
+  </div>
+</div>
