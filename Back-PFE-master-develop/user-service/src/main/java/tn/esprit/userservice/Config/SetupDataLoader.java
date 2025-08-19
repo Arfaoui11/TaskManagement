@@ -36,13 +36,20 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         // Create initial Permissions
         Permission perUser1 = createPermissionIfNotFound("create_user");
         Permission perUser2 = createPermissionIfNotFound("read_users");
-        Permission perUser6 = createPermissionIfNotFound("read_users_project");
-        Permission perUser3 = createPermissionIfNotFound("read_user");
-        Permission perUser4 = createPermissionIfNotFound("update_user");
-        Permission perUser5 = createPermissionIfNotFound("delete_user");
+        Permission perUser3 = createPermissionIfNotFound("read_users_project");
+        Permission perUser4 = createPermissionIfNotFound("read_user");
+        Permission perUser5 = createPermissionIfNotFound("update_user");
+        Permission perUser6 = createPermissionIfNotFound("delete_user");
+        Permission perUser7 = createPermissionIfNotFound("manage_teams");
+        Permission perUser8 = createPermissionIfNotFound("manage_permissions");
+        Permission perUser9 = createPermissionIfNotFound("manage_roles");
+        Permission perUser10 = createPermissionIfNotFound("view_archive");
+        Permission perUser11 = createPermissionIfNotFound("create_admin");
+        Permission perUser12 = createPermissionIfNotFound("read_projet");
+
 
         // Create initial Roles
-        Role superAdminRole = createRoleIfNotFound("super_admin", Set.of(perUser1, perUser2, perUser3, perUser4, perUser5, perUser6));
+        Role superAdminRole = createRoleIfNotFound("super_admin", Set.of(perUser1, perUser2, perUser3, perUser4, perUser5, perUser6,perUser7,perUser8,perUser9,perUser10,perUser11,perUser12));
         Role adminRole = createRoleIfNotFound("admin", Set.of(perUser1, perUser6, perUser3, perUser4, perUser5));
         Role userRole = createRoleIfNotFound("user", Set.of(perUser3, perUser4));
 
@@ -65,8 +72,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             user.setPassword(passwordEncoder.encode("admin"));
 
             // Convert List to Set to match the expected field type
-            Set<Role> roles = new HashSet<>();
-            roles.add(role);
+            //Set<Role> roles = new HashSet<>();
+            //roles.add(role);
             user.setRole(role);
 
             user.setClient_id("Wevioo_client");
