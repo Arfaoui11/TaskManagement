@@ -22,7 +22,17 @@ services:
       - portainer_data:/data
     ports:
       - "9001:9000"
-
+  sonarqube:
+    image: sonarqube:9.9-community
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1
     container_name: zookeeper
@@ -238,6 +248,9 @@ networks:
     driver: bridge
 
 volumes:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
   postgres-user-data:
   postgres-projet-data:
   pgadmin-data:
