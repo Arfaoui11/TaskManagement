@@ -7,6 +7,7 @@ pipeline {
         registryCredential = 'dockerhub-token'
         dockerImageSpring = 'mahdijr/app-server:2.0'
         dockerImageAngular = 'mahdijr/app-client:2.0'
+        dockerImage = ''
     }
     agent any
     stages {
