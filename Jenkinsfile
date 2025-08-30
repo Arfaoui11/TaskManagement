@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 pipeline {
     environment {
         registry = "mahdijr/devops-tp"
-        registryCredential = 'jenkins-dockerhub-token'
+        registryCredential = 'dockerhub-token'
         dockerImageSpring = 'mahdijr/app-server:2.0'
         dockerImageAngular = 'mahdijr/app-client:2.0'
     }
@@ -45,11 +45,29 @@ pipeline {
                                      }
                           }*/
 
-            stage("Build the package"){
+                               stage('Building our image') {
+                                      steps {
+                                          script {
+                                              dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                                          }
+                                      }
+                                  }
+
+                                  stage('Deploy our image') {
+                                      steps {
+                                          script {
+                                              docker.withRegistry( '', registryCredential ) {
+                                                  dockerImage.push()
+                                              }
+                                          }
+                                      }
+                                  }
+
+          /*  stage("Build the package"){
              steps {
                sh 'docker-compose up -d --build'
              }
-        } 
+        } */
 
 
     }
