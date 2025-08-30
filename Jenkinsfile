@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         registryCredential = 'dockerhub-token'
-        dockerHubNamespace = "mahdijr"   // your Docker Hub namespace (username or org)
+        dockerHubNamespace = "amal004"   // your Docker Hub namespace (username or org)
         version = "2.0"
     }
 
