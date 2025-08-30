@@ -4,6 +4,7 @@ pipeline {
         registryCredential = 'dockerhub-token'
         dockerHubNamespace = "amal004"   // ton namespace Docker Hub
         version = "2.0"
+        scannerHome = tool 'SonarQubeScanner'  // nom défini dans Global Tool Config
     }
 
     stages {
@@ -21,6 +22,22 @@ pipeline {
                 sh 'mvn -f Back-PFE-master-develop/pom.xml clean package -DskipTests'
             }
         }
+
+           stage("Maven Test with SonarQube") {
+                    steps {
+                        echo '🔍 Running SonarQube analysis...'
+                        withSonarQubeEnv('MySonarQube') {   // "MySonarQube" = nom configuré dans Jenkins
+                            sh """
+                                ${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.projectKey=taskmanagement \
+                                -Dsonar.sources=./Back-PFE-master-develop \
+                                -Dsonar.java.binaries=./Back-PFE-master-develop/target \
+                                -Dsonar.host.url=http://sonarqube:9000 \
+                                -Dsonar.login=\$SONAR_TOKEN
+                            """
+                        }
+                    }
+           }
 
         stage("Build Local Environment with Docker Compose") {
             steps {
