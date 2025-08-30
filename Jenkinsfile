@@ -23,7 +23,13 @@ pipeline {
             }
         }
 
-           stage("Maven Test with SonarQube") {
+        stage("Build Local Environment with Docker Compose") {
+                    steps {
+                        echo '🐳 Building local environment with docker-compose...'
+                        sh 'docker-compose up -d --build'
+                    }
+        }
+        stage("Maven Test with SonarQube") {
                     steps {
                         echo '🔍 Running SonarQube analysis...'
                         withSonarQubeEnv('MySonarQube') {   // "MySonarQube" = nom configuré dans Jenkins
@@ -37,14 +43,9 @@ pipeline {
                             """
                         }
                     }
-           }
-
-        stage("Build Local Environment with Docker Compose") {
-            steps {
-                echo '🐳 Building local environment with docker-compose...'
-                sh 'docker-compose up -d --build'
-            }
         }
+
+
 
        /* stage("Build Docker Images for Microservices") {
             steps {
