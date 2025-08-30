@@ -2,29 +2,37 @@ pipeline {
     agent any
     environment {
         registryCredential = 'dockerhub-token'
-        dockerHubNamespace = "amal004"   // your Docker Hub namespace (username or org)
+        dockerHubNamespace = "amal004"   // ton namespace Docker Hub
         version = "2.0"
     }
 
     stages {
-        stage('Checkout GIT') {
+        stage('Checkout Source Code from GitHub') {
             steps {
-                echo 'Pulling...'
+                echo '📥 Pulling source code from GitHub repository...'
                 git branch: 'master',
                     url: 'https://github.com/Arfaoui11/TaskManagement.git'
             }
         }
 
-        stage("Clean and Build backend package") {
+        stage("Clean and Package Backend with Maven") {
             steps {
+                echo '🧹 Cleaning and packaging backend (Spring Boot microservices)...'
                 sh 'mvn -f Back-PFE-master-develop/pom.xml clean package -DskipTests'
             }
         }
 
-        stage("Build Docker Images") {
+        stage("Build Local Environment with Docker Compose") {
+            steps {
+                echo '🐳 Building local environment with docker-compose...'
+                sh 'docker-compose up -d --build'
+            }
+        }
+
+        stage("Build Docker Images for Microservices") {
             steps {
                 script {
-                    // ✅ Fix: service name is part of image name, not after ":version"
+                    echo '🐳 Building Docker images for backend microservices...'
                     authImage    = docker.build("${dockerHubNamespace}/app-auth-service:${version}", "./Back-PFE-master-develop/auth-service")
                     eurekaImage  = docker.build("${dockerHubNamespace}/app-eureka-server:${version}", "./Back-PFE-master-develop/eureka-server")
                     gatewayImage = docker.build("${dockerHubNamespace}/app-gateway-service:${version}", "./Back-PFE-master-develop/gateway-service")
@@ -32,15 +40,16 @@ pipeline {
                     projetImage  = docker.build("${dockerHubNamespace}/app-projet-service:${version}", "./Back-PFE-master-develop/projet-service")
                     userImage    = docker.build("${dockerHubNamespace}/app-user-service:${version}", "./Back-PFE-master-develop/user-service")
 
-                    // Frontend
+                    echo '🌐 Building Docker image for frontend (Angular app)...'
                     frontendImage = docker.build("${dockerHubNamespace}/app-client:${version}", "./Front-PFE-develop")
                 }
             }
         }
 
-        stage("Push Docker Images") {
+        stage("Push Docker Images to Docker Hub") {
             steps {
                 script {
+                    echo '🚀 Pushing Docker images to Docker Hub...'
                     docker.withRegistry('', registryCredential) {
                         authImage.push()
                         eurekaImage.push()
