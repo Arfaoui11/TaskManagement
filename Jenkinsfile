@@ -22,7 +22,6 @@ pipeline {
             }
         }
 
-
        /* stage("Maven Test with SonarQube") {
                     steps {
                         echo '🔍 Running SonarQube analysis...'
@@ -39,7 +38,7 @@ pipeline {
                             }
         }*/
 
-       /* stage("Build Docker Images for Microservices") {
+      /*  stage("Build Docker Images for Microservices") {
             steps {
                 script {
                     echo '🐳 Building Docker images for backend microservices...'
@@ -72,5 +71,12 @@ pipeline {
                 }
             }
         }*/
+
+        stage("Build & Deploy to Nexus") {
+                    steps {
+                        echo '🐳 deplay with Nexus...'
+                        sh "mvn -f Back-PFE-master-develop/pom.xml deploy"
+                    }
+        }
     }
 }
