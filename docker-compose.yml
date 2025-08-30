@@ -11,17 +11,17 @@ services:
     networks: ["app-network"]
     depends_on:
     - gateway-service
-  portainer:
-    image: portainer/portainer-ce:latest
-    container_name: portainer
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
-    ports:
-      - "9001:9000"
+#  portainer:
+#    image: portainer/portainer-ce:latest
+#    container_name: portainer
+#    restart: unless-stopped
+#    security_opt:
+#      - no-new-privileges:true
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - portainer_data:/data
+#    ports:
+#      - "9001:9000"
   sonarqube:
     image: sonarqube:9.9-community
     container_name: sonarqube
@@ -254,4 +254,4 @@ volumes:
   postgres-user-data:
   postgres-projet-data:
   pgadmin-data:
-  portainer_data:
+#  portainer_data:
