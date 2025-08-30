@@ -4,7 +4,7 @@ pipeline {
         registryCredential = 'dockerhub-token'
         dockerHubNamespace = "amal004"   // ton namespace Docker Hub
         version = "2.0"
-        scannerHome = tool 'SonarQubeScanner'  // nom défini dans Global Tool Config
+        sonarQubeScanner 'SonarQubeScanner'  // nom défini dans Global Tool Config
     }
 
     stages {
@@ -29,20 +29,14 @@ pipeline {
                         sh 'docker-compose up -d --build'
                     }
         }
-        stage("Maven Test with SonarQube") {
-                    steps {
-                        echo '🔍 Running SonarQube analysis...'
-                        withSonarQubeEnv('MySonarQube') {   // "MySonarQube" = nom configuré dans Jenkins
-                            sh """
-                                ${scannerHome}/bin/sonar-scanner \
-                                -Dsonar.projectKey=taskmanagement \
-                                -Dsonar.sources=./Back-PFE-master-develop \
-                                -Dsonar.java.binaries=./Back-PFE-master-develop/target \
-                                -Dsonar.host.url=http://localhost:9001 \
-                                -Dsonar.login=admin -Dsonar.password=m123456789@A
-                            """
-                        }
-                    }
+        stage('Maven Test with SonarQube') {
+            tools {
+                maven 'Maven 3.9.1'               // your configured Maven tool
+                sonarQubeScanner 'SonarQubeScanner' // must match Jenkins global tool name
+            }
+            steps {
+                sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=MyProject -Dsonar.host.url=http://localhost:9001 -Dsonar.login=admin -Dsonar.password=m123456789@A'
+            }
         }
 
 
