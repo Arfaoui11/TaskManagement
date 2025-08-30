@@ -46,7 +46,7 @@ pipeline {
             }
         }
 
-        stage("Build Docker Images for Microservices") {
+       /* stage("Build Docker Images for Microservices") {
             steps {
                 script {
                     echo '🐳 Building Docker images for backend microservices...'
@@ -78,6 +78,6 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
     }
 }
