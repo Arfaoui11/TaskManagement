@@ -22,12 +22,7 @@ pipeline {
             }
         }
 
-        stage("Build Local Environment with Docker Compose") {
-                    steps {
-                        echo '🐳 Building local environment with docker-compose...'
-                        sh 'docker-compose up -d --build'
-                    }
-        }
+
         stage("Maven Test with SonarQube") {
                     steps {
                         echo '🔍 Running SonarQube analysis...'
@@ -44,7 +39,12 @@ pipeline {
                     }
         }
 
-
+        stage("Build Local Environment with Docker Compose") {
+                            steps {
+                                echo '🐳 Building local environment with docker-compose...'
+                                sh 'docker-compose up -d --build'
+                            }
+        }
 
        /* stage("Build Docker Images for Microservices") {
             steps {
