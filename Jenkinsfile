@@ -29,12 +29,12 @@ pipeline {
             steps {
                 script {
                     // Build Spring Boot backend auth-service image
-                    backendAuthServiceImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/auth-service")
-                    backendEurekaServerImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/eureka-server")
-                    backendGatewayServerImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/gateway-service")
-                    backendKafkaServiceImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/kafka-service")
-                    backendProjetServiceImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/projet-service")
-                    backendUserServiceImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/user-service")
+                    authImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/auth-service")
+                    eurekaImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/eureka-server")
+                    gatewayImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/gateway-service")
+                    kafkaImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/kafka-service")
+                    projetImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/projet-service")
+                    userImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/user-service")
 
                     // Build Angular frontend image
                     frontendImage = docker.build("${dockerHubNamespace}/${angularImage}:${version}", "./Front-PFE-master-develop")
@@ -46,11 +46,12 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', registryCredential) {
-                        backendAuthServiceImage.push()
-                        backendEurekaServerImage.push()
-                        backendGatewayServerImage.push()
-                        backendKafkaServiceImage.push()
-                        backendUserServiceImage.push()
+                        authImage.push()
+                        eurekaImage.push()
+                        gatewayImage.push()
+                        kafkaImage.push()
+                        projetImage.push()
+                        userImage.push()
                         frontendImage.push()
                     }
                 }
