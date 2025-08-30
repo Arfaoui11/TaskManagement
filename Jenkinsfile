@@ -29,12 +29,12 @@ pipeline {
             steps {
                 script {
                     // Build Spring Boot backend auth-service image
-                    authImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/auth-service")
-                    eurekaImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/eureka-server")
-                    gatewayImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/gateway-service")
-                    kafkaImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/kafka-service")
-                    projetImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/projet-service")
-                    userImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/user-service")
+                    authImage = docker.build("${dockerHubNamespace}/${springImage}:${version}/auth-service", "./Back-PFE-master-develop/auth-service")
+                    eurekaImage = docker.build("${dockerHubNamespace}/${springImage}:${version}/eureka-server", "./Back-PFE-master-develop/eureka-server")
+                    gatewayImage = docker.build("${dockerHubNamespace}/${springImage}:${version}/gateway-service", "./Back-PFE-master-develop/gateway-service")
+                    kafkaImage = docker.build("${dockerHubNamespace}/${springImage}:${version}/kafka-service", "./Back-PFE-master-develop/kafka-service")
+                    projetImage = docker.build("${dockerHubNamespace}/${springImage}:${version}/projet-service", "./Back-PFE-master-develop/projet-service")
+                    userImage = docker.build("${dockerHubNamespace}/${springImage}:${version}/user-service", "./Back-PFE-master-develop/user-service")
 
                     // Build Angular frontend image
                     frontendImage = docker.build("${dockerHubNamespace}/${angularImage}:${version}", "./Front-PFE-develop")
