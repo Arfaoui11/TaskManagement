@@ -28,8 +28,13 @@ pipeline {
         stage("Build Docker Images") {
             steps {
                 script {
-                    // Build Spring Boot backend image
-                    backendImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop")
+                    // Build Spring Boot backend auth-service image
+                    backendAuthServiceImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/auth-service")
+                    backendEurekaServerImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/eureka-server")
+                    backendGatewayServerImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/gateway-service")
+                    backendKafkaServiceImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/kafka-service")
+                    backendProjetServiceImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/projet-service")
+                    backendUserServiceImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/user-service")
 
                     // Build Angular frontend image
                     frontendImage = docker.build("${dockerHubNamespace}/${angularImage}:${version}", "./Front-PFE-master-develop")
@@ -41,7 +46,11 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', registryCredential) {
-                        backendImage.push()
+                        backendAuthServiceImage.push()
+                        backendEurekaServerImage.push()
+                        backendGatewayServerImage.push()
+                        backendKafkaServiceImage.push()
+                        backendUserServiceImage.push()
                         frontendImage.push()
                     }
                 }
