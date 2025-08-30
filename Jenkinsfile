@@ -23,21 +23,21 @@ pipeline {
         }
 
 
-        stage("Maven Test with SonarQube") {
+       /* stage("Maven Test with SonarQube") {
                     steps {
                         echo '🔍 Running SonarQube analysis...'
                         withSonarQubeEnv('MySonarQube') {   // "MySonarQube" = nom configuré dans Jenkins
                             sh "mvn -f Back-PFE-master-develop/pom.xml sonar:sonar -Dsonar.projectKey=taskmanagement -Dsonar.host.url=http://localhost:9001 -Dsonar.login=squ_523b59dd0db2b15bfe7654b7e21794de6f39bc30"
                         }
                     }
-        }
+        }*/
 
-        stage("Build Local Environment with Docker Compose") {
+       /* stage("Build Local Environment with Docker Compose") {
                             steps {
                                 echo '🐳 Building local environment with docker-compose...'
                                 sh 'docker-compose up -d --build'
                             }
-        }
+        }*/
 
        /* stage("Build Docker Images for Microservices") {
             steps {
