@@ -15,7 +15,7 @@ const httpOptions = {
 })
 export class UserService {
 
-  
+
   private apiUrl = `${environment.apiUrl}/users`; // Replace with your backend API URL
 
   constructor(private http: HttpClient) {}
@@ -59,9 +59,9 @@ export class UserService {
   assignRoleToUser(userId: number, roleId: number): Observable<User> {
     return this.http.put<User>(`${this.apiUrl}/${userId}/role/${roleId}`, httpOptions);
   }
-  
+
   getRoles(): Observable<Role[]> {
-    return this.http.get<Role[]>('http://localhost:8080/api2/roles');  // Ajustez l'URL de votre API pour récupérer les rôles
+    return this.http.get<Role[]>('http://localhost:8000/api2/roles');  // Ajustez l'URL de votre API pour récupérer les rôles
   }
   // Activer un utilisateur
   inviteUser(user: User): Observable<any> {

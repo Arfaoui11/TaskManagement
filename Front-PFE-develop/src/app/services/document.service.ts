@@ -9,7 +9,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   providedIn: 'root'
 })
 export class DocumentService {
-  private apiUrl = 'http://localhost:8080/api1/documents';
+  private apiUrl = 'http://localhost:8000/api1/documents';
 
   constructor(private http: HttpClient,    private sanitizer: DomSanitizer
   ) {}
@@ -30,7 +30,7 @@ export class DocumentService {
   // Gestion des erreurs
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Une erreur est survenue';
-    
+
     if (error.error instanceof ErrorEvent) {
       // Erreur côté client
       errorMessage = `Erreur: ${error.error.message}`;
@@ -38,7 +38,7 @@ export class DocumentService {
       // Erreur côté serveur
       errorMessage = `Code: ${error.status}, Message: ${error.error?.message || error.statusText}`;
     }
-    
+
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
   }
@@ -107,28 +107,28 @@ getRootDocumentsByProject(projectId: number): Observable<Document[]> {
 
   // 📤 Téléversement & création
   uploadDocument(
-    name: string, 
-    file: File, 
-    dossierId: number | null, 
-    userId: number, 
-    parentId: number | null, 
+    name: string,
+    file: File,
+    dossierId: number | null,
+    userId: number,
+    parentId: number | null,
     projetId: number | null
   ): Observable<Document> {
     const formData = new FormData();
     formData.append('name', name);
     formData.append('file', file);
     formData.append('userId', userId.toString());
-    
+
     // Ajouter dossierId seulement s'il n'est pas null
     if (dossierId !== null) {
       formData.append('dossierId', dossierId.toString());
     }
-    
+
     // Ajouter projetId seulement s'il n'est pas null
     if (projetId !== null) {
       formData.append('projetId', projetId.toString());
     }
-    
+
     // Ajouter parentId seulement s'il n'est pas null
     if (parentId !== null) {
       formData.append('parentId', parentId.toString());
@@ -137,15 +137,15 @@ getRootDocumentsByProject(projectId: number): Observable<Document[]> {
     return this.http.post<Document>(`${this.apiUrl}/upload`, formData);
   }
 
-  
-  
-  
+
+
+
 
   // ✏️ Mise à jour
   updateDocument(
-    documentId: number, 
-    dossierId: number, 
-    data: { name: string; content?: string; file?: File; }, 
+    documentId: number,
+    dossierId: number,
+    data: { name: string; content?: string; file?: File; },
     existingDocument: Document
   ): Observable<Document> {
     const formData = new FormData();
@@ -166,7 +166,7 @@ getRootDocumentsByProject(projectId: number): Observable<Document[]> {
     }).pipe(catchError(this.handleError));
   }
 
- 
+
 
   // 📦 Archivage & restauration
   archiveDocument(id: number | null): Observable<Document> {

@@ -33,14 +33,14 @@ export class RoleService {
 
 deleteRole(id: number): Observable<void> {
   return this.http.delete<void>(`${this.apiUrl}/${id}`);
-    
+
 }
 
   getPermissions(): Observable<Permissions[]> {
-    return this.http.get<Permissions[]>(`http://localhost:8080/api2/permissions`);
+    return this.http.get<Permissions[]>(`http://localhost:8000/api2/permissions`);
   }
  getPermissionById(id: number): Observable<Permission> {
-     return this.http.get<Permission>(`http://localhost:8080/api2/permissions/${id}`);
+     return this.http.get<Permission>(`http://localhost:8000/api2/permissions/${id}`);
    }
    updatePermissions(roleId: string, permissions: any[]): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${roleId}/permissions`, { permissions });

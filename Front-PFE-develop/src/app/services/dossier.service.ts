@@ -11,7 +11,7 @@ export class DossierService {
   open(CreateDossierComponent: CreateDossierComponent) {
     throw new Error('Method not implemented.');
   }
-  private apiUrl = 'http://localhost:8080/api1/dossiers'; // Remplacez par l'URL de votre API backend
+  private apiUrl = 'http://localhost:8000/api1/dossiers'; // Remplacez par l'URL de votre API backend
 
   constructor(private http: HttpClient) {}
 
@@ -48,7 +48,7 @@ export class DossierService {
 
     return this.http.post<Dossier>(`${this.apiUrl}`, dossier, { params });
   }
-  
+
 
   // Mettre à jour un dossier existant
   updateDossier(id: number, dossier: Dossier): Observable<Dossier> {
@@ -94,6 +94,6 @@ export class DossierService {
   getSubDossiers(projetId: number, parentId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/projet/${projetId}/parent/${parentId}`);
   }
-  
-  
+
+
 }

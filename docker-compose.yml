@@ -135,7 +135,7 @@ services:
       context: Back-PFE-master-develop/gateway-service
       dockerfile: Dockerfile
     container_name: gateway-service
-    ports: ["8080:9090"]
+    ports: ["8000:9090"]
     environment:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_APPLICATION_NAME: gateway-service

@@ -8,7 +8,7 @@ import { Tache } from '../models/tache.models';
   providedIn: 'root'
 })
 export class TacheService {
-  private baseUrl = 'http://localhost:8080/api1/taches';
+  private baseUrl = 'http://localhost:8000/api1/taches';
 
   // Observable pour notifier les changements
   private taskChanges = new Subject<void>();

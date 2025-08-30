@@ -8,7 +8,7 @@ import { Team } from '../models/team.model';
   providedIn: 'root'
 })
 export class ProjetService {
-  private apiUrl = 'http://localhost:8080/api1/projets';
+  private apiUrl = 'http://localhost:8000/api1/projets';
 
   constructor(private http: HttpClient) { }
 
@@ -59,6 +59,6 @@ export class ProjetService {
   return this.http.put<Projet>(url, {});
 }
 getTeamByIdWithMembers(teamId: number): Observable<Team> {
-  return this.http.get<Team>(`http://localhost:8080/api2/projets/with-members/${teamId}`);
+  return this.http.get<Team>(`http://localhost:8000/api2/projets/with-members/${teamId}`);
 }
 }
