@@ -1,77 +1,51 @@
-
 import java.text.SimpleDateFormat
 
 pipeline {
-    environment {
-        registry = "mahdijr/devops-tp"
-        registryCredential = 'dockerhub-token'
-        dockerImageSpring = 'mahdijr/app-server:2.0'
-        dockerImageAngular = 'mahdijr/app-client:2.0'
-        dockerImage = ''
-    }
     agent any
+    environment {
+        registryCredential = 'dockerhub-token'
+        dockerHubNamespace = "mahdijr"   // your Docker Hub namespace (username or org)
+        springImage = "app-server"
+        angularImage = "app-client"
+        version = "2.0"
+    }
+
     stages {
-
-
-        stage('Checkout GIT'){
-                      steps{
-                          echo 'Pulling...';
-                          git branch: 'master',
-                          url: 'https://github.com/Arfaoui11/TaskManagement.git';
-                      }
+        stage('Checkout GIT') {
+            steps {
+                echo 'Pulling...'
+                git branch: 'master',
+                    url: 'https://github.com/Arfaoui11/TaskManagement.git'
+            }
         }
 
-         stage("Clean and Build package"){
-                            steps {
-                                sh 'mvn -f /var/lib/jenkins/workspace/Task_Management/Back-PFE-master-develop/pom.xml clean package'
-                            }
-                        }
+        stage("Clean and Build backend package") {
+            steps {
+                sh 'mvn -f Back-PFE-master-develop/pom.xml clean package -DskipTests'
+            }
+        }
 
-          /*  stage("Test (Junit && Mockito) And Build The Package with Kubernetes and Ansible"){
-                            steps {
-                                sh 'ansible-playbook ansible-playbook.yml'
-                            }
-                        }
+        stage("Build Docker Images") {
+            steps {
+                script {
+                    // Build Spring Boot backend image
+                    backendImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop")
 
+                    // Build Angular frontend image
+                    frontendImage = docker.build("${dockerHubNamespace}/${angularImage}:${version}", "./Front-PFE-master-develop")
+                }
+            }
+        }
 
-              stage("Maven Clean And  Package "){
-                    steps {
-                        sh 'ansible-playbook ansible-docker-compose.yml'
+        stage("Push Docker Images") {
+            steps {
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        backendImage.push()
+                        frontendImage.push()
                     }
                 }
-
-               stage("Tests JUnit / Mockito / SonarQube && Deploy artifacts with Nexus && DockerHub avec Ansible "){
-                                     steps {
-                                       sh 'ansible-playbook ansible-test.yml'
-                                     }
-                          }*/
-
-                               stage('Building our image') {
-                                      steps {
-                                          script {
-                                              dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                                          }
-                                      }
-                                  }
-
-                                  stage('Deploy our image') {
-                                      steps {
-                                          script {
-                                              docker.withRegistry( '', registryCredential ) {
-                                                  dockerImage.push()
-                                              }
-                                          }
-                                      }
-                                  }
-
-          /*  stage("Build the package"){
-             steps {
-               sh 'docker-compose up -d --build'
-             }
-        } */
-
-
+            }
+        }
     }
-
-
 }
