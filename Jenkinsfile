@@ -37,7 +37,7 @@ pipeline {
                     userImage = docker.build("${dockerHubNamespace}/${springImage}:${version}", "./Back-PFE-master-develop/user-service")
 
                     // Build Angular frontend image
-                    frontendImage = docker.build("${dockerHubNamespace}/${angularImage}:${version}", "./Front-PFE-master-develop")
+                    frontendImage = docker.build("${dockerHubNamespace}/${angularImage}:${version}", "./Front-PFE-develop")
                 }
             }
         }
