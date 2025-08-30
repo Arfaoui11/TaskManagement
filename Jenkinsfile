@@ -38,8 +38,8 @@ pipeline {
                                 -Dsonar.projectKey=taskmanagement \
                                 -Dsonar.sources=./Back-PFE-master-develop \
                                 -Dsonar.java.binaries=./Back-PFE-master-develop/target \
-                                -Dsonar.host.url=http://sonarqube:9000 \
-                                -Dsonar.login=\$SONAR_TOKEN
+                                -Dsonar.host.url=http://localhost:9001 \
+                                -Dsonar.login=admin -Dsonar.password=m123456789@A
                             """
                         }
                     }
