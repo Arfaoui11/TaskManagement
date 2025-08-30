@@ -44,7 +44,7 @@ pipeline {
                             }
         }
 
-        stage("Build Docker Images for Microservices") {
+        stage("Build Docker Images for Task Management App") {
             steps {
                 script {
                     echo '🐳 Building Docker images for backend microservices...'
