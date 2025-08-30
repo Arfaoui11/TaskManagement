@@ -27,14 +27,7 @@ pipeline {
                     steps {
                         echo '🔍 Running SonarQube analysis...'
                         withSonarQubeEnv('MySonarQube') {   // "MySonarQube" = nom configuré dans Jenkins
-                            sh """
-                                ${scannerHome}/bin/sonar-scanner \
-                                -Dsonar.projectKey=taskmanagement \
-                                -Dsonar.sources=./Back-PFE-master-develop \
-                                -Dsonar.java.binaries=./Back-PFE-master-develop/target \
-                                -Dsonar.host.url=http://localhost:9001 \
-                                -Dsonar.login=admin -Dsonar.password=m123456789@A
-                            """
+                            sh "mvn -f Back-PFE-master-develop/pom.xml sonar:sonar -Dsonar.login=admin -Dsonar.password=m123456789@A"
                         }
                     }
         }
