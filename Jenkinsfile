@@ -1,12 +1,8 @@
-import java.text.SimpleDateFormat
-
 pipeline {
     agent any
     environment {
         registryCredential = 'dockerhub-token'
         dockerHubNamespace = "mahdijr"   // your Docker Hub namespace (username or org)
-        springImage = "app-server"
-        angularImage = "app-client"
         version = "2.0"
     }
 
@@ -28,16 +24,16 @@ pipeline {
         stage("Build Docker Images") {
             steps {
                 script {
-                    // Build Spring Boot backend auth-service image
-                    authImage = docker.build("${dockerHubNamespace}/${springImage}:${version}/auth-service", "./Back-PFE-master-develop/auth-service")
-                    eurekaImage = docker.build("${dockerHubNamespace}/${springImage}:${version}/eureka-server", "./Back-PFE-master-develop/eureka-server")
-                    gatewayImage = docker.build("${dockerHubNamespace}/${springImage}:${version}/gateway-service", "./Back-PFE-master-develop/gateway-service")
-                    kafkaImage = docker.build("${dockerHubNamespace}/${springImage}:${version}/kafka-service", "./Back-PFE-master-develop/kafka-service")
-                    projetImage = docker.build("${dockerHubNamespace}/${springImage}:${version}/projet-service", "./Back-PFE-master-develop/projet-service")
-                    userImage = docker.build("${dockerHubNamespace}/${springImage}:${version}/user-service", "./Back-PFE-master-develop/user-service")
+                    // ✅ Fix: service name is part of image name, not after ":version"
+                    authImage    = docker.build("${dockerHubNamespace}/app-auth-service:${version}", "./Back-PFE-master-develop/auth-service")
+                    eurekaImage  = docker.build("${dockerHubNamespace}/app-eureka-server:${version}", "./Back-PFE-master-develop/eureka-server")
+                    gatewayImage = docker.build("${dockerHubNamespace}/app-gateway-service:${version}", "./Back-PFE-master-develop/gateway-service")
+                    kafkaImage   = docker.build("${dockerHubNamespace}/app-kafka-service:${version}", "./Back-PFE-master-develop/kafka-service")
+                    projetImage  = docker.build("${dockerHubNamespace}/app-projet-service:${version}", "./Back-PFE-master-develop/projet-service")
+                    userImage    = docker.build("${dockerHubNamespace}/app-user-service:${version}", "./Back-PFE-master-develop/user-service")
 
-                    // Build Angular frontend image
-                    frontendImage = docker.build("${dockerHubNamespace}/${angularImage}:${version}", "./Front-PFE-develop")
+                    // Frontend
+                    frontendImage = docker.build("${dockerHubNamespace}/app-client:${version}", "./Front-PFE-develop")
                 }
             }
         }
