@@ -4,7 +4,6 @@ pipeline {
         registryCredential = 'dockerhub-token'
         dockerHubNamespace = "amal004"   // ton namespace Docker Hub
         version = "2.0"
-        sonarQubeScanner 'SonarQubeScanner'  // nom défini dans Global Tool Config
     }
 
     stages {
