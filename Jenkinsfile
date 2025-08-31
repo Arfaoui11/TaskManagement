@@ -28,23 +28,23 @@ pipeline {
                     }
         }*/
 
-       stage("Maven Test with SonarQube") {
+     /*  stage("Maven Test with SonarQube") {
                     steps {
                         echo '🔍 Running SonarQube analysis...'
                         withSonarQubeEnv('sonar-9') {   // "MySonarQube" = nom configuré dans Jenkins
                             sh "mvn -f Back-PFE-master-develop/pom.xml sonar:sonar -Dsonar.projectKey=taskmanagement -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=sonar"
                         }
                     }
-        }
+        }*/
 
-       /* stage("Build Local Environment with Docker Compose") {
+        stage("Build Local Environment with Docker Compose") {
                             steps {
                                 echo '🐳 Building local environment with docker-compose...'
                                 sh 'docker compose up -d --build'
                             }
-        }*/
+        }
 
-        stage("Build Docker Images for Task Management App") {
+     /*   stage("Build Docker Images for Task Management App") {
             steps {
                 script {
                     echo '🐳 Building Docker images for backend microservices...'
@@ -59,7 +59,7 @@ pipeline {
                     frontendImage = docker.build("${dockerHubNamespace}/app-client:${version}", "./Front-PFE-develop")
                 }
             }
-        }
+        }*/
 
       /*  stage("Push Docker Images to Docker Hub") {
             steps {
@@ -84,11 +84,11 @@ pipeline {
                     }
         }*/
 
-        stage("Build & Deploy to Nexus") {
+      /*  stage("Build & Deploy to Nexus") {
                     steps {
                         echo '🐳 deplay with Nexus...'
                         sh "mvn -f Back-PFE-master-develop/pom.xml clean deploy"
                     }
-        }
+        }*/
     }
 }
