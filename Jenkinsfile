@@ -31,7 +31,7 @@ pipeline {
        stage("Maven Test with SonarQube") {
                     steps {
                         echo '🔍 Running SonarQube analysis...'
-                        withSonarQubeEnv('MySonarQube') {   // "MySonarQube" = nom configuré dans Jenkins
+                        withSonarQubeEnv('sonar-9') {   // "MySonarQube" = nom configuré dans Jenkins
                             sh "mvn -f Back-PFE-master-develop/pom.xml sonar:sonar -Dsonar.projectKey=taskmanagement -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=sonar"
                         }
                     }
