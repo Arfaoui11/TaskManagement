@@ -22,20 +22,20 @@ pipeline {
             }
         }
 
-        stage("Maven Test with SonarQube") {
-                    steps {
-                        echo '🔍 Running SonarQube analysis...'
-                    }
-        }
-
        /* stage("Maven Test with SonarQube") {
                     steps {
                         echo '🔍 Running SonarQube analysis...'
-                        withSonarQubeEnv('MySonarQube') {   // "MySonarQube" = nom configuré dans Jenkins
-                            sh "mvn -f Back-PFE-master-develop/pom.xml sonar:sonar -Dsonar.projectKey=taskmanagement -Dsonar.host.url=http://localhost:9001 -Dsonar.login=squ_523b59dd0db2b15bfe7654b7e21794de6f39bc30"
-                        }
                     }
         }*/
+
+       stage("Maven Test with SonarQube") {
+                    steps {
+                        echo '🔍 Running SonarQube analysis...'
+                        withSonarQubeEnv('MySonarQube') {   // "MySonarQube" = nom configuré dans Jenkins
+                            sh "mvn -f Back-PFE-master-develop/pom.xml sonar:sonar -Dsonar.projectKey=taskmanagement -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=sonar"
+                        }
+                    }
+        }
 
         stage("Build Local Environment with Docker Compose") {
                             steps {
@@ -61,7 +61,7 @@ pipeline {
             }
         }
 
-        stage("Push Docker Images to Docker Hub") {
+      /*  stage("Push Docker Images to Docker Hub") {
             steps {
                 script {
                     echo '🚀 Pushing Docker images to Docker Hub...'
@@ -76,19 +76,19 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
 
-         stage("Build & Deploy to Nexus") {
+       /*  stage("Build & Deploy to Nexus") {
                     steps {
                         echo '🐳 deplay with Nexus...'
                     }
-        }
+        }*/
 
-       /* stage("Build & Deploy to Nexus") {
+        stage("Build & Deploy to Nexus") {
                     steps {
                         echo '🐳 deplay with Nexus...'
                         sh "mvn -f Back-PFE-master-develop/pom.xml clean deploy"
                     }
-        }*/
+        }
     }
 }
