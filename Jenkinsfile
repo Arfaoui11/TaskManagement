@@ -40,7 +40,7 @@ pipeline {
         stage("Build Local Environment with Docker Compose") {
                             steps {
                                 echo '🐳 Building local environment with docker-compose...'
-                                sh 'docker-compose up -d --build'
+                                sh 'docker compose up -d --build'
                             }
         }
 
