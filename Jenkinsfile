@@ -22,11 +22,11 @@ pipeline {
             }
         }
 
-       /* stage("Maven Test with SonarQube") {
+        stage("Maven Test with SonarQube") {
                     steps {
                         echo '🔍 Running SonarQube analysis...'
                     }
-        }*/
+        }
 
      /*  stage("Maven Test with SonarQube") {
                     steps {
@@ -44,7 +44,7 @@ pipeline {
                             }
         }
 
-     /*   stage("Build Docker Images for Task Management App") {
+        stage("Build Docker Images for Task Management App") {
             steps {
                 script {
                     echo '🐳 Building Docker images for backend microservices...'
@@ -59,9 +59,9 @@ pipeline {
                     frontendImage = docker.build("${dockerHubNamespace}/app-client:${version}", "./Front-PFE-develop")
                 }
             }
-        }*/
+        }
 
-      /*  stage("Push Docker Images to Docker Hub") {
+        stage("Push Docker Images to Docker Hub") {
             steps {
                 script {
                     echo '🚀 Pushing Docker images to Docker Hub...'
@@ -76,13 +76,13 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
 
-       /*  stage("Build & Deploy to Nexus") {
+         stage("Build & Deploy to Nexus") {
                     steps {
                         echo '🐳 deplay with Nexus...'
                     }
-        }*/
+        }
 
       /*  stage("Build & Deploy to Nexus") {
                     steps {
