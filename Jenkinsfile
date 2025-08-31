@@ -37,12 +37,12 @@ pipeline {
                     }
         }
 
-        stage("Build Local Environment with Docker Compose") {
+       /* stage("Build Local Environment with Docker Compose") {
                             steps {
                                 echo '🐳 Building local environment with docker-compose...'
                                 sh 'docker compose up -d --build'
                             }
-        }
+        }*/
 
         stage("Build Docker Images for Task Management App") {
             steps {
